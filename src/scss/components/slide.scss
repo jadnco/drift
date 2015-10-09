@@ -1,0 +1,16 @@
+* {
+  outline: 1px dashed black;
+}
+
+.slide {
+  width: 100%;
+  height: 100%;
+  background: #D7DDE6;
+  padding: ws(xx-large);
+
+  box-sizing: border-box;
+
+  &:nth-of-type(even) {
+    background: #C2E6D0;
+  }
+}

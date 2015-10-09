@@ -59,7 +59,7 @@ gulp.task('styles', function() {
 gulp.task('templates', function() {
   var opts = {
     ignorePartials: true,
-    batch: ['src/partials']
+    batch: ['src/partials', 'src/slides']
   };
 
   gulp.src([paths.src.root + '/*.hbs'])
