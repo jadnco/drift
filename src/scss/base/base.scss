@@ -37,11 +37,16 @@ a {
   }
 }
 
+p,
+ul {
+  padding-bottom: ws(small);
+}
+
 h1,
 h2,
 h3 {
   font-weight: 500 !important;
-  margin-bottom: ws(large);
+  padding-bottom: ws(small);
 }
 
 h1 {
