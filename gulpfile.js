@@ -9,7 +9,9 @@ var gulp        = require('gulp'),
     handlebars  = require('gulp-compile-handlebars'),
     browserSync = require('browser-sync'),
     ghPages     = require('gulp-gh-pages'),
-    sassGlob    = require('gulp-sass-bulk-import');
+    sassGlob    = require('gulp-sass-bulk-import'),
+    markdown    = require('gulp-markdown'),
+    watch       = require('gulp-watch');
 
 var paths = {
   src: { root: 'src' },
@@ -33,7 +35,7 @@ var paths = {
 
 gulp.task('serve', function() {
   browserSync.init({
-    server: paths.dist.root,
+    //server: paths.dist.root,
     open: false,
     notify: false
   });
@@ -59,7 +61,7 @@ gulp.task('styles', function() {
 gulp.task('templates', function() {
   var opts = {
     ignorePartials: true,
-    batch: ['src/partials', 'src/slides']
+    batch: ['src/partials']
   };
 
   gulp.src([paths.src.root + '/*.hbs'])
@@ -71,6 +73,20 @@ gulp.task('templates', function() {
     .on('error', util.log)
     .pipe(gulp.dest(paths.dist.root))
     .pipe(browserSync.reload({stream: true}));
+});
+
+gulp.task('slides', function() {
+  gulp.src([paths.src.root + '/slides/*.md'])
+    .pipe(markdown())
+    .on('error', util.log)
+    .pipe(gulp.dest('src/partials'))
+    .on('end', function() {
+      gulp.start('templates');
+    });
+});
+
+gulp.task('clean:slides', function(a) {
+  del(['src/partials/*.html'], a);
 });
 
 /*
@@ -115,6 +131,11 @@ gulp.task('clean:files', function(a) {
   del([paths.dist.root + '/*.{html,txt}'], a);
 });
 
+watch('src/slides/*.md', function() {
+  gulp.start('clean:slides');
+  gulp.start('slides');
+});
+
 gulp.task('watch', function() {
   gulp.watch('src/scss/**/*.scss', ['styles']);
   gulp.watch(paths.src.javascript, ['scripts']);
@@ -128,4 +149,4 @@ gulp.task('deploy', function() {
     .pipe(ghPages());
 });
 
-gulp.task('default', ['watch', 'serve', 'images', 'files', 'styles', 'scripts', 'templates']);
+gulp.task('default', ['slides', 'watch', 'serve', 'images', 'files', 'styles', 'scripts', 'templates']);

@@ -41,6 +41,7 @@ h1,
 h2,
 h3 {
   font-weight: 500 !important;
+  margin-bottom: ws(large);
 }
 
 h1 {
@@ -75,4 +76,8 @@ h3 {
   h3 {
     font: font(large);
   }
+}
+
+ul {
+  padding-left: ws(x-medium);
 }
