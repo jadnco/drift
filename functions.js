@@ -11,6 +11,24 @@ module.exports = {
 
     return callback(true);
   },
+  // Check that a token exists
+  tokenExists: function(token, content, callback) {
+    content = content || [];
+
+    // Loop through the file
+    for (var i = 0; i < content.length; i++) {
+      // Token matches
+      if (content[i].token === Number(token)) {
+        // Send the content that matches the token
+        return callback(true, content[i]);
+      }
+    }
+
+    console.log('token ' + token + ' wasnt found!');
+
+    // Token doesn't exist
+    return callback(false, null);
+  },
   isInt: function(n) {
     return Number(n) === n && n % 1 === 0;
   }

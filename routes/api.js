@@ -10,4 +10,9 @@ router.route('/info/:token')
     info.update(req.params.token, req, res);
   });
 
+router.route('/info')
+  .get(function(req, res) {
+    info.getAll(res);
+  });
+
 module.exports = router;

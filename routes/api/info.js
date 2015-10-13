@@ -17,25 +17,25 @@ var generateToken = function() {
   console.log(token);
 };
 
+module.exports.getAll = function(res) {
+  // Grab the entire file
+  var content = JSON.parse(fs.readFileSync(file));
+
+  res.json(content);
+};
+
 module.exports.get = function(token, res) {
   fns.isValidToken(token, function(valid) {
     if (!valid) return res.sendStatus(400);
 
     // Grab the entire file
     var content = JSON.parse(fs.readFileSync(file));
-    console.log(content);
 
-    // Loop through the file
-    for (var i = 0; i < content.length; i++) {
-      // Token matches
-      if (content[i].token === Number(token)) {
-        return res.json(content[i]);
-      }
-    }
+    fns.tokenExists(token, content, function(exists, result) {
+      if (!exists) return res.sendStatus(400);
 
-    // Token wasn't found
-    console.log('token ' + token + ' wasnt found!');
-    res.sendStatus(400);
+      res.json(result);
+    });
   });
 };
 
@@ -43,8 +43,9 @@ module.exports.update = function(token, req, res) {
   fns.isValidToken(token, function(valid) {
     if (!valid) return res.sendStatus(400);
 
-    
+
   });
+  
   // Update position in json file
   var updated = req.body;
 
