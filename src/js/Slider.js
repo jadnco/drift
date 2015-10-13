@@ -5,6 +5,8 @@ var Slider = function() {
   // This should be dynamic, count all .slide divs
   this.totalSlides = 4;
 
+  this.api = '/api/info';
+
   this.nextSlide = function(callback) {
     console.log('nextSlide() called.');
 
@@ -26,7 +28,44 @@ var Slider = function() {
     this.currentPosition--;
   };
 
+  this.getCurrentPosition = function() {
+    var http = new XMLHttpRequest();
+
+    // Send the GET request
+    http.open('GET', this.api, false);
+    http.send();
+
+    // Set the current position
+    this.currentPosition = JSON.parse(http.responseText).position;
+
+    console.log(this.currentPosition)
+  };
+
+  this.getTotalSlides = function() {
+    var http = new XMLHttpRequest();
+
+    // Send the GET request
+    http.open('GET', this.api, false);
+    http.send();
+
+    // Set the current position
+    this.totalSlides = JSON.parse(http.responseText).totalSlides;
+  };
+
   this.previousSlide();
+
+  this.getCurrentPosition();
 };
 
 var slide = new Slider();
+
+function nextSlide() {
+  var xhttp = new XMLHttpRequest();
+  url = "/api/info";
+ 
+  xhttp.open("POST", url, true);
+  xhttp.setRequestHeader("Content-type", "application/json");
+  xhttp.send(JSON.stringify({position: 101}));
+
+  slide.getCurrentPosition();
+}
