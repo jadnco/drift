@@ -1,5 +1,6 @@
 const fs     = require('fs');
 const random = require('random-js')();
+const fns    = require('../../functions.js');
 
 const file = 'info.json';
 
@@ -16,18 +17,34 @@ var generateToken = function() {
   console.log(token);
 };
 
-// TODO: query by token (eg. api/info/1348)
+module.exports.get = function(token, res) {
+  fns.isValidToken(token, function(valid) {
+    if (!valid) return res.sendStatus(400);
 
-module.exports.get = function(req, res) {
-  var content = JSON.parse(fs.readFileSync(file));
+    // Grab the entire file
+    var content = JSON.parse(fs.readFileSync(file));
+    console.log(content);
 
-  // Read json file and get position
-  res.json(content);
+    // Loop through the file
+    for (var i = 0; i < content.length; i++) {
+      // Token matches
+      if (content[i].token === Number(token)) {
+        return res.json(content[i]);
+      }
+    }
 
-  generateToken();
+    // Token wasn't found
+    console.log('token ' + token + ' wasnt found!');
+    res.sendStatus(400);
+  });
 };
 
-module.exports.update = function(req, res) {
+module.exports.update = function(token, req, res) {
+  fns.isValidToken(token, function(valid) {
+    if (!valid) return res.sendStatus(400);
+
+    
+  });
   // Update position in json file
   var updated = req.body;
 
