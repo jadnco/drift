@@ -18,13 +18,19 @@ router.route('/slideshow/:token')
   })
 
   // Update this specific slide
-  .put(() => {
+  .put((req, res) => {
+    // Create query, can select w/ id or token
+    let _query = query(req.params.token, {token: req.params.token});
 
+    slideshows.update(_query, req, res);
   })
 
   // Delete this slide
-  .delete(() => {
-
+  .delete((req, res) => {
+    // Create query, can select w/ id or token
+    let _query = query(req.params.token, {token: req.params.token});
+    
+    slideshows.delete(_query, res);
   });
 
 router.route('/slideshows')

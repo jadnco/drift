@@ -30,52 +30,38 @@ module.exports.add = (req, res) => {
 
 // Get all slideshow objects
 module.exports.getAll = (res) => {
-  console.time('GET ALL');
-  
-  Slideshow.find(function(err, slideshows) {
+  Slideshow.find((err, slideshows) => {
     if (err) return res.send(err);
 
     res.json({slideshows: slideshows});
   });
-
-  console.timeEnd('GET ALL');
 };
 
 module.exports.get = (query, res) => {
-  console.time('GET ONE');
-
   Slideshow.find(query, (err, slideshow) => {
     if (err) return res.send(err);
 
     res.json({slideshow: slideshow});
   });
-
-  console.timeEnd('GET ONE');
 };
 
-module.exports.update = (token, req, res) => {
-  fns.isValidToken(token, (valid) => {
-    if (!valid) return res.sendStatus(400);
+module.exports.update = (query, req, res) => {
+  let updated = req.body.slideshow;
 
-    // Grab the entire file
-    var content = JSON.parse(fs.readFileSync(file));
+  // Set the modified date
+  updated.modified = Date.now();
 
-    fns.tokenExists(token, content, (exists, result) => {
-      if (!exists) return res.sendStatus(400);
+  Slideshow.findOneAndUpdate(query, {$set: updated}, (err, slideshow) => {
+    if (err) return res.send(err);
 
-      result.position = req.body.position;
-
-      //fns.modify(token, );
-
-      // fns.modify(file, token, content, result, function(err) {
-      //   if (err) return res.sendStatus(400);
-
-      //   res.json(result);
-      // });
-    });
+    res.json({slideshow: slideshow});
   });
 };
 
-module.exports.delete = () => {
+module.exports.delete = (query, res) => {
+  Slideshow.findOneAndRemove(query, (err, slideshow) => {
+    if (err || !slideshow) return res.send(err);
 
+    res.sendStatus(200);
+  });
 };
