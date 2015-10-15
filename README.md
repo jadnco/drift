@@ -70,7 +70,6 @@ Response:
     {
       "_id": "561ff1aadf537cd4f9501f9f",
       "token": "9846",
-      "__v": 0,
       "modified": "2015-10-15T19:53:48.889Z",
       "created": "2015-10-15T18:34:18.605Z",
       "slides": [
@@ -81,9 +80,9 @@ Response:
         }
       ],
       "position": 2
-    }
+    },
 
-    {...}
+    ...
   ]
 }
 ```
@@ -165,7 +164,6 @@ Response:
 ```json
 {
   "slideshow": {
-    "__v": 0,
     "_id": "562004e1f73eb2e915abeab5",
     "created": "2015-10-15T19:56:16.999Z",
     "slides": [],
