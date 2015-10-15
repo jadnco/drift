@@ -31,9 +31,6 @@ module.exports = {
     // Token doesn't exist
     return callback(false, null);
   },
-  modify: function(token) {
-    console.log(token);
-  },
   modify: function(file, token, result, callback) {
     var content = JSON.parse(fs.readFileSync(file));
 

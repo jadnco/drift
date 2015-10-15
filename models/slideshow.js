@@ -1,8 +1,10 @@
+'use strict';
+
 const mongoose = require('mongoose');
 const Schema   = mongoose.Schema;
 const Slide    = require('./slide');
 
-var SlideshowSchema = new Schema({
+let SlideshowSchema = new Schema({
   // Unique identifier
   token: {
     type: String,
@@ -30,5 +32,15 @@ var SlideshowSchema = new Schema({
   // Date of last modifications
   modified: Date
 });
+
+SlideshowSchema.pre('save', (next) => {
+  console.log("Slideshow Saved -> ", this.token);
+
+  // Update the modified date
+  this.modified = Date.now;
+
+  next();
+});
+
 
 module.exports = mongoose.model('Slideshow', SlideshowSchema);

@@ -1,9 +1,11 @@
+'use strict';
+
 const mongoose = require('mongoose');
 const Schema   = mongoose.Schema;
 
-var SlideSchema = new Schema({
+let SlideSchema = new Schema({
   // Location/position of slide
-  location: String,
+  location: Number,
 
   // HTML content
   content: String

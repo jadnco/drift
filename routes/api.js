@@ -7,21 +7,31 @@ const router    = express.Router();
 const slideshows = require('./api/slideshow');
 
 router.route('/slideshow/:token')
-  .get(function(req, res) {
+
+  // Get the JSON object
+  .get((req, res) => {
     slideshows.get(req.params.token, res);
   })
-  .put(function() {
+
+  // Update this specific slide
+  .put(() => {
 
   })
-  .delete(function() {
+
+  // Delete this slide
+  .delete(() => {
 
   });
 
 router.route('/slideshows')
-  .get(function(req, res) {
+
+  // Get a list of all slideshows
+  .get((req, res) => {
     slideshows.getAll(res);
   })
-  .post(function(req, res) {
+
+  // Create a new slideshow
+  .post((req, res) => {
     slideshows.add(req, res);
   });
 

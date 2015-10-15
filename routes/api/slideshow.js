@@ -7,12 +7,9 @@ const fns    = require('../../functions.js');
 const mongoose = require('mongoose');
 const Slideshow = require('../../models/slideshow');
 
-var getTotalSlides = function() {
-  // count slides directory
-};
 
 // Generate random 5 digit integer
-var generateToken = function() {
+var generateToken = () => {
   var token = '';
 
   token += random.integer(1000, 9999);
@@ -21,11 +18,11 @@ var generateToken = function() {
 };
 
 // Create a new slideshow object
-module.exports.add = function(req, res) {
+module.exports.add = (req, res) => {
   console.log(req.body);
   let slideshow = new Slideshow(req.body.slideshow);
 
-  slideshow.save(function(err) {
+  slideshow.save((err) => {
     if (err) return res.send(err);
 
     res.json({slideshow: slideshow});
@@ -33,7 +30,7 @@ module.exports.add = function(req, res) {
 };
 
 // Get all slideshow objects
-module.exports.getAll = function(res) {
+module.exports.getAll = (res) => {
   console.time('GET ALL');
   
   Slideshow.find(function(err, slideshows) {
@@ -45,16 +42,16 @@ module.exports.getAll = function(res) {
   console.timeEnd('GET ALL');
 };
 
-module.exports.get = function(token, res) {
+module.exports.get = (token, res) => {
   console.time('GET ONE');
 
-  fns.isValidToken(token, function(valid) {
+  fns.isValidToken(token, (valid) => {
     if (!valid) return res.sendStatus(400);
 
     // Grab the entire file
     var content = JSON.parse(fs.readFileSync(file));
 
-    fns.tokenExists(token, content, function(exists, result) {
+    fns.tokenExists(token, content, (exists, result) => {
       if (!exists) return res.sendStatus(400);
 
       res.json(result);
@@ -64,14 +61,14 @@ module.exports.get = function(token, res) {
   console.timeEnd('GET ONE');
 };
 
-module.exports.update = function(token, req, res) {
-  fns.isValidToken(token, function(valid) {
+module.exports.update = (token, req, res) => {
+  fns.isValidToken(token, (valid) => {
     if (!valid) return res.sendStatus(400);
 
     // Grab the entire file
     var content = JSON.parse(fs.readFileSync(file));
 
-    fns.tokenExists(token, content, function(exists, result) {
+    fns.tokenExists(token, content, (exists, result) => {
       if (!exists) return res.sendStatus(400);
 
       result.position = req.body.position;
@@ -87,6 +84,6 @@ module.exports.update = function(token, req, res) {
   });
 };
 
-module.exports.delete = function() {
+module.exports.delete = () => {
 
 };
