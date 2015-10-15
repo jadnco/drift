@@ -50,3 +50,126 @@ gulp deploy
 
 - Responsive grid from [Skeleton](http://getskeleton.com) by [Dave Gamache](https://github.com/dhg)
 
+## API
+
+### Slideshow
+
+#### GET
+
+Returns a list of all slideshows
+
+##### Example
+
+> GET /api/slideshows
+  
+Response:
+
+```json
+{
+  "slideshows": [
+    {
+      "_id": "561ff1aadf537cd4f9501f9f",
+      "token": "9846",
+      "__v": 0,
+      "modified": "2015-10-15T19:53:48.889Z",
+      "created": "2015-10-15T18:34:18.605Z",
+      "slides": [
+        {
+          "location": 0,
+          "content": "<h1>This is the first slide.</h1>",
+          "_id": "561ff1aadf537cd4f9501fa0"
+        }
+      ],
+      "position": 2
+    }
+
+    {...}
+  ]
+}
+```
+
+
+#### GET
+
+Returns a single slideshow by `token` or `_id`.
+
+##### Example
+
+> GET /api/slideshow/:token:id
+  
+Response:
+
+```json
+{
+  "slideshow":[
+    {
+      "_id":"561ff1aadf537cd4f9501f9f",
+      "token":"9846",
+      "created":"2015-10-15T18:34:18.605Z",
+      "slides":[
+        {
+          "location":0,
+          "content":"<h1>This is the first slide.</h1>",
+          "_id":"561ff1aadf537cd4f9501fa0"
+        }
+      ],
+      "position":0
+    }
+  ]
+}
+```
+
+#### PUT
+
+Update a single slideshow by `token` or `_id`.
+
+##### Example
+
+> PUT /api/slideshow/:token:id
+  
+Request:
+
+```json
+{
+  "slideshow":{
+    "position": 2
+  }
+}
+```
+
+Response:
+
+> 200 OK
+
+
+#### POST
+
+Create a new slideshow record
+
+##### Example
+
+> POST /api/slideshows
+
+Request:
+
+```json
+{
+  "slideshow": {
+    "position": "1903"
+  }
+}
+```
+
+Response:
+
+```json
+{
+  "slideshow": {
+    "__v": 0,
+    "_id": "562004e1f73eb2e915abeab5",
+    "created": "2015-10-15T19:56:16.999Z",
+    "slides": [],
+    "position": 1903
+  }
+}
+```

@@ -54,7 +54,7 @@ module.exports.update = (query, req, res) => {
   Slideshow.findOneAndUpdate(query, {$set: updated}, (err, slideshow) => {
     if (err) return res.send(err);
 
-    res.json({slideshow: slideshow});
+    res.sendStatus(200);
   });
 };
 
