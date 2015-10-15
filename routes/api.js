@@ -2,15 +2,19 @@
 
 'use strict';
 
-const express   = require('express');
-const router    = express.Router();
+const express    = require('express');
+const router     = express.Router();
 const slideshows = require('./api/slideshow');
+const query      = require('../functions').query;
 
 router.route('/slideshow/:token')
 
   // Get the JSON object
   .get((req, res) => {
-    slideshows.get(req.params.token, res);
+    // Create query, can select w/ id or token
+    let _query = query(req.params.token, {token: req.params.token});
+
+    slideshows.get(_query, res);
   })
 
   // Update this specific slide

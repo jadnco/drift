@@ -19,7 +19,6 @@ var generateToken = () => {
 
 // Create a new slideshow object
 module.exports.add = (req, res) => {
-  console.log(req.body);
   let slideshow = new Slideshow(req.body.slideshow);
 
   slideshow.save((err) => {
@@ -42,20 +41,13 @@ module.exports.getAll = (res) => {
   console.timeEnd('GET ALL');
 };
 
-module.exports.get = (token, res) => {
+module.exports.get = (query, res) => {
   console.time('GET ONE');
 
-  fns.isValidToken(token, (valid) => {
-    if (!valid) return res.sendStatus(400);
+  Slideshow.find(query, (err, slideshow) => {
+    if (err) return res.send(err);
 
-    // Grab the entire file
-    var content = JSON.parse(fs.readFileSync(file));
-
-    fns.tokenExists(token, content, (exists, result) => {
-      if (!exists) return res.sendStatus(400);
-
-      res.json(result);
-    });
+    res.json({slideshow: slideshow});
   });
 
   console.timeEnd('GET ONE');

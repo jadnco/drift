@@ -34,8 +34,6 @@ let SlideshowSchema = new Schema({
 });
 
 SlideshowSchema.pre('save', (next) => {
-  console.log("Slideshow Saved -> ", this.token);
-
   // Update the modified date
   this.modified = Date.now;
 

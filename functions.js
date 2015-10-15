@@ -1,6 +1,22 @@
+'use strict';
+
 const fs = require('fs');
 
 module.exports = {
+  // Query a slideshow by id or token
+  query: (id, token) => {
+    let query;
+
+    if (id !== undefined) {
+      query = {$or: [token]};
+
+      if (id.match(/^[0-9a-fA-F]{24}$/)) {
+        query.$or.push({_id: id});
+      }
+    }
+
+    return query;
+  },
   // Check that token is valid
   isValidToken: function(token, callback) {
     token = Number(token) || null;
