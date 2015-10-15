@@ -1,18 +1,28 @@
-const express  = require('express');
-const router   = express.Router();
-const info     = require('./api/info');
+/* jshint node: true */
 
-router.route('/info/:token')
+'use strict';
+
+const express   = require('express');
+const router    = express.Router();
+const slideshows = require('./api/slideshow');
+
+router.route('/slideshow/:token')
   .get(function(req, res) {
-    info.get(req.params.token, res);
+    slideshows.get(req.params.token, res);
   })
-  .post(function(req, res) {
-    info.update(req.params.token, req, res);
+  .put(function() {
+
+  })
+  .delete(function() {
+
   });
 
-router.route('/info')
+router.route('/slideshows')
   .get(function(req, res) {
-    info.getAll(res);
+    slideshows.getAll(res);
+  })
+  .post(function(req, res) {
+    slideshows.add(req, res);
   });
 
 module.exports = router;

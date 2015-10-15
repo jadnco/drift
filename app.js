@@ -1,6 +1,10 @@
-var express = require('express');
-var path = require('path');
-var bodyParser = require('body-parser');
+const express    = require('express');
+const path       = require('path');
+const bodyParser = require('body-parser');
+const mongoose   = require('mongoose');
+
+// Connect to the database
+mongoose.connect('mongodb://localhost:27017');
 
 var app = express();
 
