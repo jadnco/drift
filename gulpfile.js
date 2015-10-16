@@ -35,10 +35,11 @@ var paths = {
 
 gulp.task('serve', function() {
   browserSync.init({
-    //server: paths.dist.root,
+    server: paths.dist.root,
     ui: false,
     open: false,
-    notify: false
+    notify: false,
+    online: false
   });
 });
 

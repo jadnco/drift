@@ -1,25 +1,21 @@
 'use strict';
 
 const fs     = require('fs');
-const random = require('random-js')();
 const fns    = require('../../functions.js');
 
-const mongoose = require('mongoose');
+const mongoose  = require('mongoose');
 const Slideshow = require('../../models/slideshow');
 
-
-// Generate random 5 digit integer
-var generateToken = () => {
-  var token = '';
-
-  token += random.integer(1000, 9999);
-
-  console.log(token);
-};
+const generateToken = require('../../functions').generateToken;
 
 // Create a new slideshow object
 module.exports.add = (req, res) => {
   let slideshow = new Slideshow(req.body.slideshow);
+
+  // Generate a token value
+  if (slideshow.token === undefined) {
+    slideshow.token = generateToken();
+  }
 
   slideshow.save((err) => {
     if (err) return res.send(err);

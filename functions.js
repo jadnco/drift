@@ -1,6 +1,7 @@
 'use strict';
 
-const fs = require('fs');
+const fs     = require('fs');
+const random = require('random-js')();
 
 module.exports = {
   // Query a slideshow by id or token
@@ -16,6 +17,10 @@ module.exports = {
     }
 
     return query;
+  },
+  // Generate random 4 digit integer
+  generateToken: () => {
+    return random.integer(1000, 9999).toString();
   },
   // Check that token is valid
   isValidToken: function(token, callback) {

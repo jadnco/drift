@@ -33,12 +33,4 @@ let SlideshowSchema = new Schema({
   modified: Date
 });
 
-SlideshowSchema.pre('save', (next) => {
-  // Update the modified date
-  this.modified = Date.now;
-
-  next();
-});
-
-
 module.exports = mongoose.model('Slideshow', SlideshowSchema);
