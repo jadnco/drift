@@ -1,8 +1,5 @@
 {
-  // Enable ES6 features
   "esnext": true,
-  // Variables must be camelCase
   "camelcase": true,
-  // Indents must be 2 spaces
   "indent": 2
 }

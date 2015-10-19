@@ -1,21 +1,27 @@
 # Drift
 
-[![forthebadge](http://forthebadge.com/images/badges/powered-by-netflix.svg)](http://forthebadge.com)
+[![forthebadge](http://forthebadge.com/images/badges/certified-snoop-lion.svg)](http://forthebadge.com)
 
-A starting point for creating static websites. It uses Gulp to compile Sass, Handlebars partials and bundle JavaScripts into a distribution folder.
+A cool slideshow and remote app.
 
 ### Getting Started
+
+Make sure you have the following dependencies installed globally:
+  - [Node.js](https://nodejs.org/en/)
+  - [MongoDB](https://www.mongodb.org)
+  - [Gulp](http://gulpjs.com)
+  - [Jasmine](https://github.com/jasmine/jasmine)
 
 Clone the repo using `git clone` or by clicking the *Download ZIP* button to the right.
 
 ```sh
-git clone https://github.com/jadnco/boilerplate.git
+git clone https://github.com/danieltamkin/Drift.git
 ```
 
-Navigate to the directory to where it was cloned.
+Navigate to the cloned directory
 
 ```sh
-cd boilerplate
+cd Drift
 ```
 
 Install all dependencies using npm:
@@ -39,6 +45,8 @@ BrowserSync will automagically inject any changes you make to the stylesheets. Y
     External: http://10.0.X.XX:3000
  ----------------------------------
 ```
+
+The `External` URL is disabled by default, because we don't want randos watching us work. It can be enabled by setting the `online` value to `true` inside `gulpfile.js`.
 
 If you are working within a GitHub repo you can deploy your project, at any time, to a `gh-pages` branch by running:
 
