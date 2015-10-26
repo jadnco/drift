@@ -28,6 +28,7 @@
     "gulp-uglify": "^1.2.0",
     "gulp-util": "^3.0.4",
     "gulp-watch": "^4.3.5",
+    "jasmine-expect": "^1.22.3",
     "request": "^2.65.0"
   },
   "dependencies": {
