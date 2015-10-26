@@ -138,6 +138,10 @@ watch('src/slides/*.md', function() {
   gulp.start('slides');
 });
 
+gulp.task('distribute', function() {
+  // TODO: Take all files, minify and stick them in ./dist
+});
+
 gulp.task('watch', function() {
   gulp.watch('src/scss/**/*.scss', ['styles']);
   gulp.watch(paths.src.javascript, ['scripts']);
