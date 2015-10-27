@@ -31,8 +31,6 @@ describe('Slideshow API', () => {
       request.get(API.local + 'slideshow/9846', (error, res, body) => {
         body = JSON.parse(body);
 
-        console.log(body);
-
         expect(body).toBeObject();
 
         // Check if .slideshow exists
