@@ -23,16 +23,16 @@ module.exports = {
     return random.integer(1000, 9999).toString();
   },
   // Check that token is valid
-  isValidToken: function(token, callback) {
+  isValidToken: function(token, success, failure) {
     token = Number(token) || null;
 
     if (!this.isInt(token) || String(token).length !== 4) {
       console.log('Invalid token: ', token);
 
-      return callback(false);
+      return failure();
     }
 
-    return callback(true);
+    return success();
   },
   // Check that a token exists
   tokenExists: function(token, content, callback) {
