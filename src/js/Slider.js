@@ -57,7 +57,7 @@ var Slider = function() {
   this.getCurrentPosition();
 };
 
-var slide = new Slider();
+//var slide = new Slider();
 
 function nextSlide() {
   var xhttp = new XMLHttpRequest();

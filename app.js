@@ -24,6 +24,7 @@ app.use('/api', api);
 app.use('/remote', remote);
 
 app.use('/', express.static(__dirname + '/dist'));
+app.use('/assets', express.static(__dirname + '/assets'));
 
 app.listen(process.env.port || 3000);
 console.log('<--------------- App is running ---------------->');

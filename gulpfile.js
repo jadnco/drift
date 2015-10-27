@@ -24,10 +24,10 @@ var paths = {
     this.src.images      = this.src.root + '/images/**/*.{jpg,jpeg,svg,png,gif}';
     this.src.files       = this.src.root + '/*.{html,txt}';
 
-    this.dist.css        = this.dist.root + '/css';
-    this.dist.images     = this.dist.root + '/images';
-    this.dist.javascript = this.dist.root + '/js';
-    this.dist.libs       = this.dist.root + '/js/libs';
+    this.dist.css        = 'assets/css';
+    this.dist.images     = 'assets/images';
+    this.dist.javascript = 'assets/scripts';
+    this.dist.libs       = 'assets/scripts/libs';
     
     return this;
   }
