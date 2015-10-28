@@ -1,3 +1,17 @@
+var current;
+
+/**
+ * Get the token from the url
+ * 
+ * @return {string}
+ * - the token value
+ */
+var token = function(token) {
+  token = token || window.location.pathname.slice(-4);
+
+  return token;
+}();
+
 /**
  * Sends AJAX request to update slideshow record
  * 
@@ -9,8 +23,50 @@
  * 
  * @return {[type]}         [description]
  */
-var update = function(url, content) {
+var update = function(token, content) {
+  var http = new XMLHttpRequest(),
+      url  = '/api/slideshow/';
 
+  var request = {
+    slideshow: content
+  };
+
+  // Open the request
+  http.open("PUT", url + token, true);
+
+  // Make sure the content is sent as json data
+  http.setRequestHeader("Content-type", "application/json");
+
+  console.log('update called');
+
+  // Send the request
+  http.send(JSON.stringify(request));
+};
+
+/**
+ * Get a slideshow response by token from API
+ * 
+ * @param  {string} token
+ * - the token identifier
+ * 
+ * @return {object}
+ * - the slideshow object
+ */
+var get = function(token) {
+  var http = new XMLHttpRequest(),
+      url  = '/api/slideshow/',
+      response;
+
+  // Open the request
+  http.open("GET", url + token, false);
+
+  http.send(null);
+
+  // Convert response into object
+  response = JSON.parse(http.responseText);
+
+  // Send the request
+  return response.slideshow[0];
 };
 
 /**
@@ -22,7 +78,13 @@ var update = function(url, content) {
  * @return {[type]}          [description]
  */
 var redirect = function(location) {
+  // Just use a hash symbol if location isn't defined
+  location = location || '#';
 
+  // Do the actual redirect
+  window.location.href = location;
+
+  return;
 };
 
 /**
@@ -45,8 +107,19 @@ var animate = function(location) {
  * 
  * @return {[type]}
  */
-var validateToken = function(token) {
+var validateToken = function(token, callback) {
+  // Make sure token exists and is a number
+  token = Number(token) || null;
 
+  if (!token || String(token).length !== 4) {
+    // The token is not valid
+    //return callbackcallback(false);
+    return false;
+  }
+
+  // Token is valid so redirect
+  //.return
+  return redirect('/remote/' + token);
 };
 
 /**
@@ -55,31 +128,29 @@ var validateToken = function(token) {
  * @return {[type]} [description]
  */
 var invalidToken = function() {
-
+  // Send error to the form
 };
 
 /**
  * Animates to previous slide and updates API record
  * 
- * @param {int} currentSlide
- * - current slide value, passed from the API
- * 
  * @return {[type]}
  */
-var nextSlide = function(currentSlide) {
+var nextSlide = function() {
 
+  // Increment slide
+  current++;
 };
 
 /**
  * Animates to next slide and updates API record
  * 
- * @param {int} currentSlide
- * - current slide value, passed from the API 
- * 
  * @return {[type]}
  */
-var previousSlide = function(currentSlide) {
+var previousSlide = function() {
 
+  // Update the local int of current slide
+  current--;
 };
 
 /**
@@ -88,5 +159,26 @@ var previousSlide = function(currentSlide) {
  * @return {[type]} [description]
  */
 var resetSlides = function() {
+  current = 0;
 
+  // Send new position to API
+  update(token, {position: current});
+
+  // Animate to the new slide
+  animate(current);
 };
+
+/**
+ * Initialize the slideshow
+ */
+var init = function() {
+  var slideshow = get(token);
+
+  // Set the current slide
+  current = slideshow.position;
+
+  // Animate to the current slide
+  animate(current);
+}();
+
+resetSlides();
