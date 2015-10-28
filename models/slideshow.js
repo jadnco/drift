@@ -17,9 +17,6 @@ let SlideshowSchema = new Schema({
     default: 0
   },
 
-  // Count of slides
-  slidesCount: Number,
-
   // Array of slides
   slides: [Slide],
 
@@ -28,6 +25,10 @@ let SlideshowSchema = new Schema({
     type: Date,
     default: Date.now
   },
+
+  title: String,
+  description: String,
+  author: String,
 
   // Date of last modifications
   modified: Date

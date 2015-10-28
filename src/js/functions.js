@@ -6,8 +6,8 @@ var current;
  * @return {string}
  * - the token value
  */
-var token = function(token) {
-  token = token || window.location.pathname.slice(-4);
+var token = function() {
+  token = window.location.pathname.slice(-4);
 
   return token;
 }();
@@ -53,6 +53,9 @@ var update = function(token, content) {
  * - the slideshow object
  */
 var get = function(token) {
+  // no token, nothing to do
+  if (!token) return false;
+
   var http = new XMLHttpRequest(),
       url  = '/api/slideshow/',
       response;
@@ -107,18 +110,20 @@ var animate = function(location) {
  * 
  * @return {[type]}
  */
-var validateToken = function(token, callback) {
+var validateToken = function(form) {
+  var token = form.elements.token.value;
+
   // Make sure token exists and is a number
   token = Number(token) || null;
 
   if (!token || String(token).length !== 4) {
     // The token is not valid
-    //return callbackcallback(false);
+    form.elements.error.value = "Please enter a valid token";
+
     return false;
   }
 
   // Token is valid so redirect
-  //.return
   return redirect('/remote/' + token);
 };
 
@@ -137,9 +142,10 @@ var invalidToken = function() {
  * @return {[type]}
  */
 var nextSlide = function() {
-
   // Increment slide
   current++;
+
+  animate(current);
 };
 
 /**
@@ -148,9 +154,10 @@ var nextSlide = function() {
  * @return {[type]}
  */
 var previousSlide = function() {
-
   // Update the local int of current slide
   current--;
+
+  animate(current);
 };
 
 /**
@@ -175,10 +182,8 @@ var init = function() {
   var slideshow = get(token);
 
   // Set the current slide
-  current = slideshow.position;
+  current = slideshow ? slideshow.position : null;
 
   // Animate to the current slide
   animate(current);
 }();
-
-resetSlides();
