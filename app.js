@@ -16,12 +16,14 @@ app.use(bodyParser.json());
 
 let api    = require('./routes/api');
 let remote = require('./routes/remote');
+let accept = require('./routes/accept');
 
 app.engine('.hbs', exphbs({extname: '.hbs'}));
 app.set('view engine', '.hbs');
 
 app.use('/api', api);
 app.use('/remote', remote);
+app.use('/accept', accept);
 
 app.use('/', express.static(__dirname + '/dist'));
 app.use('/assets', express.static(__dirname + '/assets'));

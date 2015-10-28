@@ -29,6 +29,13 @@ a {
   }
 }
 
+.btn {
+  padding: ws(x-small);
+  background: color(light);
+  display: inline-block;
+  border-radius: 4px;
+}
+
 .cf {
   &:after {
     content: '';

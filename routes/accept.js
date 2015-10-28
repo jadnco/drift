@@ -12,11 +12,13 @@ const fns = require('../functions');
 const Route = require('../route');
 
 router.route('/')
-  .get((req, res) => {
-    res.render('access');
-  });
 
-router.route('/:token')
+  .post((req, res) => {
+    console.log('Accept post called');
+
+    
+    res.send({success: true});
+  })
 
   .get((req, res) => {
     fns.isValidToken(req.params.token, () => {
@@ -32,9 +34,7 @@ router.route('/:token')
         // Render template with data
         res.render('remote', {token: req.params.token, slideshow: slideshow});
       });
-    }, 
-
-    () => {
+    }, () => {
       res.render('remote', {token: req.params.token, error: 'Invalid token'});
     });
   });
