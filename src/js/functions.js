@@ -1,4 +1,4 @@
-var current;
+var current, slideshow;
 
 /**
  * Get the token from the url
@@ -99,7 +99,7 @@ var redirect = function(location) {
  * @return {[type]}          [description]
  */
 var animate = function(location) {
-
+  console.log('animating to slide', current);
 };
 
 /**
@@ -123,17 +123,10 @@ var validateToken = function(form) {
     return false;
   }
 
+  // TODO: Send and check for request
+
   // Token is valid so redirect
   return redirect('/remote/' + token);
-};
-
-/**
- * The token is invalid, show error
- * 
- * @return {[type]} [description]
- */
-var invalidToken = function() {
-  // Send error to the form
 };
 
 /**
@@ -142,7 +135,11 @@ var invalidToken = function() {
  * @return {[type]}
  */
 var nextSlide = function() {
-  // Increment slide
+  // Reset if on last slide
+  if (current === slideshow.slides.length - 1) {
+    return resetSlides();
+  }
+
   current++;
 
   animate(current);
@@ -154,9 +151,13 @@ var nextSlide = function() {
  * @return {[type]}
  */
 var previousSlide = function() {
-  // Update the local int of current slide
-  current--;
+  // Can't go below zero
+  if (current === 0) {
+    return;
+  }
 
+  current--;
+  
   animate(current);
 };
 
@@ -171,6 +172,8 @@ var resetSlides = function() {
   // Send new position to API
   update(token, {position: current});
 
+  console.log("slides reset");
+
   // Animate to the new slide
   animate(current);
 };
@@ -179,7 +182,7 @@ var resetSlides = function() {
  * Initialize the slideshow
  */
 var init = function() {
-  var slideshow = get(token);
+  slideshow = get(token);
 
   // Set the current slide
   current = slideshow ? slideshow.position : null;

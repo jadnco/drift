@@ -14,9 +14,10 @@ let app = express();
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
-let api    = require('./routes/api');
-let remote = require('./routes/remote');
-let accept = require('./routes/accept');
+let api       = require('./routes/api');
+let remote    = require('./routes/remote');
+let accept    = require('./routes/accept');
+let slideshow = require('./routes/slideshow');
 
 app.engine('.hbs', exphbs({extname: '.hbs'}));
 app.set('view engine', '.hbs');
@@ -24,8 +25,8 @@ app.set('view engine', '.hbs');
 app.use('/api', api);
 app.use('/remote', remote);
 app.use('/accept', accept);
-
-app.use('/', express.static(__dirname + '/dist'));
+app.use('/slideshow', slideshow);
+app.use('/', slideshow);
 app.use('/assets', express.static(__dirname + '/assets'));
 
 app.listen(process.env.port || 3000);

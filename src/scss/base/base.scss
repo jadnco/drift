@@ -40,6 +40,21 @@ a {
   color: color(red);
 }
 
+.info {
+  padding: ws(x-small);
+  background: rgba(white, 0.8);
+  border-radius: 5px;
+  position: fixed;
+  right: ws(medium);
+  bottom: ws(medium);
+  z-index: 999;
+  border: 1px solid darken(white, 10%);
+
+  div {
+    font: font(medium);
+  }
+}
+
 .cf {
   &:after {
     content: '';
