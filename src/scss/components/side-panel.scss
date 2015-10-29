@@ -1,0 +1,42 @@
+#side-panel {
+  width: 100px;
+  height: 100%;
+
+  background: rgba(white, 0.9);
+  border-right: 1px solid darken(white, 10%);
+
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 999;
+  opacity: 0;
+  transform: translateX(-100px);
+
+  transition: all 0.2s cubic-bezier(0.680, -1.10, 0.265, 0.9);
+
+  &.visible {
+    transform: translateX(0px);
+    opacity: 1;
+
+    & ~ .slide {
+      h1 {
+        color: red !important;
+      }
+    }
+  }
+
+  ul#slide-thumbs {
+    list-style: none;
+    padding: 0;
+    text-align: center;
+
+    li {
+      width: 80px;
+      margin: ws(small) auto 0 auto;
+      text-align: center;
+      border: 1px solid darken(white, 10%);
+      border-radius: 5px;
+      padding: ws(x-small) 0;
+    }
+  }
+}

@@ -1,8 +1,27 @@
+{{#if slideshow}}
+  <aside id="side-panel">
+    <ul id="slide-thumbs">
+      {{#each slideshow.slides}}
+        <li>{{location}}</li>
+      {{/each}}
+    </ul>
+  </aside>
+{{/if}}
+
+<button onclick="showSide()" style="position:fixed;z-index:999;right: 100px;top:100px;">Show side</button>
 
 <script src="assets/scripts/bundle.js"></script>
 
 {{#if slideshow}}
   <script>listen();</script>
+
+  <script>
+  var showSide = function() {
+    var panel = document.getElementById('side-panel');
+
+    panel.className += ' visible';
+  };
+  </script>
 {{/if}}
 
 </body>
