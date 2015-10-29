@@ -7,7 +7,7 @@ var current, slideshow;
  * - the token value
  */
 var token = function() {
-  token = window.location.pathname.slice(-4);
+  var token = window.location.pathname.slice(-4);
 
   return token;
 }();
@@ -23,7 +23,7 @@ var token = function() {
  * 
  * @return {[type]}         [description]
  */
-var update = function(token, content) {
+var update = function(content) {
   var http = new XMLHttpRequest(),
       url  = '/api/slideshow/';
 
@@ -36,8 +36,6 @@ var update = function(token, content) {
 
   // Make sure the content is sent as json data
   http.setRequestHeader("Content-type", "application/json");
-
-  console.log('update called');
 
   // Send the request
   http.send(JSON.stringify(request));
@@ -52,10 +50,7 @@ var update = function(token, content) {
  * @return {object}
  * - the slideshow object
  */
-var get = function(token) {
-  // no token, nothing to do
-  if (!token) return false;
-
+var get = function() {
   var http = new XMLHttpRequest(),
       url  = '/api/slideshow/',
       response;
@@ -91,7 +86,7 @@ var redirect = function(location) {
 };
 
 /**
- * Does the animation to specified slide
+ * Animate to slide location
  * 
  * @param {int} location
  * - location of slide to animate to
@@ -99,7 +94,13 @@ var redirect = function(location) {
  * @return {[type]}          [description]
  */
 var animate = function(location) {
-  console.log('animating to slide', current);
+  var height = window.innerHeight;
+
+  location = location || 0;
+
+  //window.scrollTo(0, height * location);
+
+  document.body.style.transform = "translate3d(0,"+(-(height*location))+",0)");
 };
 
 /**
@@ -130,7 +131,7 @@ var validateToken = function(form) {
 };
 
 /**
- * Animates to previous slide and updates API record
+ * Animates to previous slide
  * 
  * @return {[type]}
  */
@@ -142,11 +143,14 @@ var nextSlide = function() {
 
   current++;
 
+  // Update API response
+  update({position: current});
+
   animate(current);
 };
 
 /**
- * Animates to next slide and updates API record
+ * Animates to next slide
  * 
  * @return {[type]}
  */
@@ -157,6 +161,9 @@ var previousSlide = function() {
   }
 
   current--;
+
+  // Update API response
+  update({position: current});
   
   animate(current);
 };
@@ -170,7 +177,7 @@ var resetSlides = function() {
   current = 0;
 
   // Send new position to API
-  update(token, {position: current});
+  update({position: current});
 
   console.log("slides reset");
 
@@ -179,13 +186,34 @@ var resetSlides = function() {
 };
 
 /**
+ * Listen for a change in the position
+ * @return {[type]} [description]
+ */
+var listen = function() {
+  console.log('listen called');
+
+  setTimeout(function() {
+    var ref = get();
+
+    if (ref.position !== current) {
+      current = ref.position;
+
+      console.log("need to animate");
+      animate(current);
+    }
+
+    listen();
+  }, 2000);
+};
+
+/**
  * Initialize the slideshow
  */
 var init = function() {
-  slideshow = get(token);
+  slideshow = get();
 
   // Set the current slide
-  current = slideshow ? slideshow.position : null;
+  current = slideshow ? slideshow.position : current;
 
   // Animate to the current slide
   animate(current);

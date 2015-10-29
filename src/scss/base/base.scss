@@ -18,6 +18,8 @@ body {
   font: font(default);
   color: color(black);
   background: color(pearl);
+  transition: transform 0.4s;
+  //transition: all 0.4s cubic-bezier(0.680, -1.10, 0.265, 0.9);
 }
 
 a {
