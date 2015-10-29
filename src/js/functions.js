@@ -54,7 +54,7 @@ var get = function(callback) {
   var http = new XMLHttpRequest(),
       url  = '/api/slideshow/',
       response;
-      
+
   http.onreadystatechange = function() {
     if (http.readyState === 4 && http.status === 200) {
       // Convert response into object
@@ -101,9 +101,7 @@ var animate = function(location) {
 
   location = location || 0;
 
-  //window.scrollTo(0, height * location);
-
-  document.body.style.transform = "translate3d(0,"+(-(height*location))+",0)";
+  document.body.style.transform = "translateY(" + -(height * location) + "px)";
 };
 
 /**
@@ -148,8 +146,6 @@ var nextSlide = function() {
 
   // Update API response
   update({position: current});
-
-  animate(current);
 };
 
 /**
@@ -167,8 +163,6 @@ var previousSlide = function() {
 
   // Update API response
   update({position: current});
-  
-  animate(current);
 };
 
 /**
@@ -181,9 +175,6 @@ var resetSlides = function() {
 
   // Send new position to API
   update({position: current});
-
-  // Animate to the new slide
-  animate(current);
 };
 
 /**
@@ -191,17 +182,12 @@ var resetSlides = function() {
  * @return {[type]} [description]
  */
 var listen = function() {
-  console.log('listen called');
-
   setTimeout(function() {
     get(function(res) {
-
-      console.log(res);
-
+      // Update current if not same as response
       if (res.position !== current) {
         current = res.position;
-
-        console.log("need to animate");
+        
         animate(current);
       }
 
@@ -219,8 +205,5 @@ var init = function() {
 
     // Set the current slide
     current = res ? res.position : current;
-
-    // Animate to the current slide
-    animate(current);
   });
 }();
