@@ -6,14 +6,16 @@
       {{/each}}
     </ul>
   </aside>
-{{/if}}
 
-<button onclick="showSide()" style="position:fixed;z-index:999;right: 100px;top:100px;">Show side</button>
+  <button onclick="showSide()" style="position:fixed;z-index:999;right: 100px;top:100px;">Show side</button>
+{{/if}}
 
 <script src="assets/scripts/bundle.js"></script>
 
 {{#if slideshow}}
   <script>listen();</script>
+
+  <div>{{slideshow.position}}</div>
 
   <script>
   var showSide = function() {

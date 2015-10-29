@@ -50,21 +50,24 @@ var update = function(content) {
  * @return {object}
  * - the slideshow object
  */
-var get = function() {
+var get = function(callback) {
   var http = new XMLHttpRequest(),
       url  = '/api/slideshow/',
       response;
+      
+  http.onreadystatechange = function() {
+    if (http.readyState === 4 && http.status === 200) {
+      // Convert response into object
+      response = JSON.parse(http.responseText);
+
+      return callback(response.slideshow[0]);
+    }
+  };
 
   // Open the request
-  http.open("GET", url + token, false);
+  http.open("GET", url + token, true);
 
   http.send(null);
-
-  // Convert response into object
-  response = JSON.parse(http.responseText);
-
-  // Send the request
-  return response.slideshow[0];
 };
 
 /**
@@ -100,7 +103,7 @@ var animate = function(location) {
 
   //window.scrollTo(0, height * location);
 
-  document.body.style.transform = "translate3d(0,"+(-(height*location))+",0)");
+  document.body.style.transform = "translate3d(0,"+(-(height*location))+",0)";
 };
 
 /**
@@ -179,8 +182,6 @@ var resetSlides = function() {
   // Send new position to API
   update({position: current});
 
-  console.log("slides reset");
-
   // Animate to the new slide
   animate(current);
 };
@@ -193,28 +194,33 @@ var listen = function() {
   console.log('listen called');
 
   setTimeout(function() {
-    var ref = get();
+    get(function(res) {
 
-    if (ref.position !== current) {
-      current = ref.position;
+      console.log(res);
 
-      console.log("need to animate");
-      animate(current);
-    }
+      if (res.position !== current) {
+        current = res.position;
 
-    listen();
-  }, 2000);
+        console.log("need to animate");
+        animate(current);
+      }
+
+      listen();
+    });
+  }, 3000);
 };
 
 /**
  * Initialize the slideshow
  */
 var init = function() {
-  slideshow = get();
+  get(function(res) {
+    slideshow = res;
 
-  // Set the current slide
-  current = slideshow ? slideshow.position : current;
+    // Set the current slide
+    current = res ? res.position : current;
 
-  // Animate to the current slide
-  animate(current);
+    // Animate to the current slide
+    animate(current);
+  });
 }();

@@ -20,7 +20,7 @@
 
     & ~ .slide {
       h1 {
-        color: red !important;
+        outline: 1px dashed rgba(color(red), 0.6);
       }
     }
   }
