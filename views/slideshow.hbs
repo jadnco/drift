@@ -1,0 +1,22 @@
+{{! The slideshow itself }}
+
+{{> header}}
+
+{{#if slideshow}}
+  <div class="info">
+    <div>Token: {{token}}</div>
+    <div>Slides: {{slideshow.slides.length}}</div>
+    <div>Position: {{slideshow.position}}</div>
+  </div>
+
+  {{#each slideshow.slides}}
+    <section class="slide slide-{{location}}">
+      {{{content}}}
+    </section>
+  {{/each}}
+
+{{else}}
+  <div>There is no slidshow.</div>
+{{/if}}
+
+{{> footer slideshow="true"}}

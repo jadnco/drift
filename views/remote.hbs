@@ -1,0 +1,26 @@
+{{> header}}
+
+<main id='remote'>
+
+{{#if error}}
+  <div class="error"><strong>{{error}} {{token}}</strong></div>
+{{else}}
+
+  {{#if slideshow}}
+    <div>Slideshow position: <strong>{{slideshow.position}}</strong></div>
+
+    <div onclick="previousSlide()" id="previous-btn" class="btn">Previous Slide</div>
+    <div onclick="nextSlide()" id="next-btn" class="btn">Next Slide</div>
+    
+    <br>
+
+    total slides: {{slideshow.slides.length}}
+  {{else}}
+    <div>There is no slidshow.</div>
+  {{/if}}
+
+{{/if}}
+
+</main>
+
+{{> footer}}

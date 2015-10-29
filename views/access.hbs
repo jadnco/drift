@@ -1,0 +1,12 @@
+{{> header}}
+
+<form onsubmit="validateToken(this); return false;">
+  <label for="token-input">Please enter a slideshow token</label>
+  <input type="text" id="token-input" name="token">
+
+  <output name="error" class="error"></output>
+
+  <input type="submit" value="Submit" id="token-submit-btn" class="btn">
+</form>
+
+{{> footer}}
