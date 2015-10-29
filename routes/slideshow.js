@@ -30,11 +30,7 @@ router.route('/:token')
         slideshow = body.slideshow[0];
 
         // Render template with data
-        res.render('slideshow', {token: req.params.token, slideshow: slideshow, helpers: {
-          frontpage: function() {
-            return 'FOO!'; 
-          }
-        }});
+        res.render('slideshow', {token: req.params.token, slideshow: slideshow});
       });
     }, 
 
