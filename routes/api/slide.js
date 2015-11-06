@@ -16,11 +16,12 @@ module.exports.add = (query, req, res) => {
 
     slide.slideshow = slideshow.id;
 
+    slideshow.slides.push(slide.id);
+
     slide.save((err) => {
       if (err) return res.send(err);
 
-      // TODO: Save reference to slideshow based on token
-      Slideshow.findByIdAndUpdate(slide.slideshow, {$push: {slides: slide.id}}, (err) => {
+      slideshow.save((err) => {
         if (err) return res.send(err);
 
         res.json({slide: slide});

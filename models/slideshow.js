@@ -2,7 +2,6 @@
 
 const mongoose = require('mongoose');
 const Schema   = mongoose.Schema;
-const Slide    = require('./slide');
 
 let SlideshowSchema = new Schema({
   // Unique identifier
