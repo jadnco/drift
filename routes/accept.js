@@ -14,9 +14,6 @@ const Route = require('../route');
 router.route('/')
 
   .post((req, res) => {
-    console.log('Accept post called');
-
-    
     res.send({success: true});
   })
 

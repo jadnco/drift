@@ -17,12 +17,6 @@
   &.visible {
     transform: translateX(0px);
     opacity: 1;
-
-    & ~ .slide {
-      h1 {
-        outline: 1px dashed rgba(color(red), 0.6);
-      }
-    }
   }
 
   ul#slide-thumbs {

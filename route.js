@@ -1,19 +1,32 @@
 'use strict';
 
 module.exports = {
-  _local: true,
+  _local: false,
 
-  local: 'http://localhost:3000/api',
-  external: 'external_url',
+  port: '1998',
 
+  local: 'localhost',
+  external: '10.28.163.66',
+
+  api: function() {
+    return (this._local ? this.local : this.external) + '/api';
+  },
+  url: function() {
+    return (this._local ? this.local : this.external) + ':' + this.port;
+  },
+  route: function() {
+    return (this._local ? this.local : this.external);
+  },
   slideshows: function() {
     let route = '/slideshows';
 
-    return (this._local ? this.local : this.external) + route;
+    return 'http://' + (this._local ? this.local : this.external) + route;
   },
   slideshow: function(token) {
     let route = '/slideshow/';
 
-    return (this._local ? this.local : this.external) + route + token;
+    token = token || '';
+
+    return 'http://' + (this._local ? this.local : this.external) + ':' + this.port + '/api' + route + token;
   }
 };

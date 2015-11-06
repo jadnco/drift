@@ -30,7 +30,7 @@ router.route('/:token')
         slideshow = body.slideshow[0];
 
         // Render template with data
-        res.render('remote', {token: req.params.token, slideshow: slideshow});
+        res.render('remote', {token: req.params.token, slideshow: slideshow, base: Route.url()});
       });
     }, 
 

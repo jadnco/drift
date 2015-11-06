@@ -6,6 +6,8 @@ const bodyParser = require('body-parser');
 const exphbs     = require('express-handlebars');
 const mongoose   = require('mongoose');
 
+const route      = require('./route');
+
 // Connect to the database
 mongoose.connect('mongodb://localhost:27017');
 
@@ -29,7 +31,8 @@ app.use('/slideshow', slideshow);
 app.use('/', slideshow);
 app.use('/assets', express.static(__dirname + '/assets'));
 
-app.listen(process.env.port || 3000);
+app.listen(route.port, route.route());
+console.log(route.route(), route.port);
 console.log('<--------------- App is running ---------------->');
 
 module.exports = app;

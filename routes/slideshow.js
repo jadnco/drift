@@ -13,7 +13,7 @@ const Route = require('../route');
 
 router.route('/')
   .get((req, res) => {
-    res.render('access');
+    res.render('access', {base: Route.url()});
   });
 
 router.route('/:token')
@@ -24,13 +24,13 @@ router.route('/:token')
 
       request.get(Route.slideshow(req.params.token), (error, _res, body) => {
         body = JSON.parse(body);
-
+        
         // Mongo outputs an array
         // we need to get the first value
         slideshow = body.slideshow[0];
 
         // Render template with data
-        res.render('slideshow', {token: req.params.token, slideshow: slideshow});
+        res.render('slideshow', {token: req.params.token, slideshow: slideshow, base: Route.url()});
       });
     }, 
 

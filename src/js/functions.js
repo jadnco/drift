@@ -187,7 +187,7 @@ var listen = function() {
       // Update current if not same as response
       if (res.position !== current) {
         current = res.position;
-        
+
         animate(current);
       }
 
