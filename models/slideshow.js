@@ -17,8 +17,11 @@ let SlideshowSchema = new Schema({
     default: 0
   },
 
-  // Array of slides
-  slides: [Slide],
+  // Array of slide references
+  slides: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Slide'
+  }] ,
 
   // Created date
   created: {

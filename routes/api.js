@@ -5,7 +5,20 @@
 const express    = require('express');
 const router     = express.Router();
 const slideshows = require('./api/slideshow');
+const slides     = require('./api/slide');
 const query      = require('../functions').query;
+
+router.route('/slides')
+
+  // Get the JSON object
+  .get((req, res) => {
+    slides.getAll(res);
+  })
+
+  // Create a new slideshow
+  .post((req, res) => {
+    slides.add(req, res);
+  });
 
 router.route('/slideshow/:token')
 

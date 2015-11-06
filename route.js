@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-  _local: false,
+  _local: true,
 
   port: '1998',
 

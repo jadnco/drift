@@ -11,4 +11,4 @@ let SlideSchema = new Schema({
   content: String
 });
 
-module.exports = SlideSchema;
+module.exports = mongoose.model('Slide', SlideSchema);
