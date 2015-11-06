@@ -17,6 +17,13 @@ module.exports = {
   route: function() {
     return (this._local ? this.local : this.external);
   },
+  slides: function(token) {
+    let route = '/slideshow/';
+
+    token = token || '';
+
+    return 'http://' + (this._local ? this.local : this.external) + ':' + this.port + '/api' + route + token + '/slides';
+  },
   slideshows: function() {
     let route = '/slideshows';
 

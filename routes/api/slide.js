@@ -5,8 +5,6 @@ const mongoose  = require('mongoose');
 const Slideshow = require('../../models/slideshow');
 const Slide     = require('../../models/slide');
 
-const generateToken = require('../../functions').generateToken;
-
 // Create a new slideshow object
 module.exports.add = (query, req, res) => {
   let slide = new Slide(req.body.slide);

@@ -29,8 +29,15 @@ router.route('/:token')
         // we need to get the first value
         slideshow = body.slideshow[0];
 
-        // Render template with data
-        res.render('slideshow', {token: req.params.token, slideshow: slideshow, base: Route.url()});
+        // Get the individual slides based on slidshow token
+        request.get(Route.slides(req.params.token), (error, _res, body) => {
+          body = JSON.parse(body);
+
+          slideshow.slides = body.slides;
+
+          // Render template with data
+          res.render('slideshow', {token: req.params.token, slideshow: slideshow, base: Route.url()});
+        });
       });
     }, 
 
