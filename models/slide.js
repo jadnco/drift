@@ -8,7 +8,12 @@ let SlideSchema = new Schema({
   location: Number,
 
   // HTML content
-  content: String
+  content: String,
+
+  slideshow: {
+    type: Schema.Types.ObjectId,
+    ref: 'Slideshow'
+  }
 });
 
 module.exports = mongoose.model('Slide', SlideSchema);

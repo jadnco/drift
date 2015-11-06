@@ -21,7 +21,7 @@ let SlideshowSchema = new Schema({
   slides: [{
     type: Schema.Types.ObjectId,
     ref: 'Slide'
-  }] ,
+  }],
 
   // Created date
   created: {

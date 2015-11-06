@@ -1,8 +1,6 @@
 'use strict';
 
-const fs     = require('fs');
-const fns    = require('../../functions.js');
-
+const fns       = require('../../functions.js');
 const mongoose  = require('mongoose');
 const Slideshow = require('../../models/slideshow');
 

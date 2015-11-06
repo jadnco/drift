@@ -1,30 +1,44 @@
 'use strict';
 
-const fs     = require('fs');
-const fns    = require('../../functions.js');
-
+const fns       = require('../../functions.js');
 const mongoose  = require('mongoose');
-const Slide = require('../../models/slide');
+const Slideshow = require('../../models/slideshow');
+const Slide     = require('../../models/slide');
 
 const generateToken = require('../../functions').generateToken;
 
 // Create a new slideshow object
-module.exports.add = (req, res) => {
+module.exports.add = (query, req, res) => {
   let slide = new Slide(req.body.slide);
 
-  slide.save((err) => {
+  Slideshow.findOne(query, (err, slideshow) => {
     if (err) return res.send(err);
 
-    res.json({slide: slide});
-  });
+    slide.slideshow = slideshow.id;
+
+    slide.save((err) => {
+      if (err) return res.send(err);
+
+      // TODO: Save reference to slideshow based on token
+      Slideshow.findByIdAndUpdate(slide.slideshow, {$push: {slides: slide.id}}, (err) => {
+        if (err) return res.send(err);
+
+        res.json({slide: slide});
+      });
+    });
+  }); 
 };
 
 // Get all slideshow objects
-module.exports.getAll = (res) => {
-  Slide.find((err, slides) => {
+module.exports.getAll = (query, res) => {
+  Slideshow.findOne(query, (err, slideshow) => {
     if (err) return res.send(err);
 
-    res.json({slides: slides});
+    Slide.find({slideshow: slideshow.id}, (err, slides) => {
+      if (err) return res.send(err);
+
+      res.json({slides: slides});
+    }).sort('location');
   });
 };
 

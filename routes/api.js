@@ -8,16 +8,20 @@ const slideshows = require('./api/slideshow');
 const slides     = require('./api/slide');
 const query      = require('../functions').query;
 
-router.route('/slides')
+router.route('/slideshow/:token/slides')
 
   // Get the JSON object
   .get((req, res) => {
-    slides.getAll(res);
+    let _query = query(req.params.token, {token: req.params.token});
+
+    slides.getAll(_query, res);
   })
 
   // Create a new slideshow
   .post((req, res) => {
-    slides.add(req, res);
+    let _query = query(req.params.token, {token: req.params.token});
+
+    slides.add(_query, req, res);
   });
 
 router.route('/slideshow/:token')
