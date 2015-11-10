@@ -18,8 +18,9 @@ var paths = {
   dist: { root: 'dist' },
   init: function() {
     this.src.sass        = this.src.root + '/scss/main.scss';
-    this.src.javascript  = [this.src.root + '/js/**/_*.js','!' + this.src.root + '/js/libs/*.js'];
-    this.src.libs        = this.src.root + '/js/libs/*.js';
+    this.src.js          = [this.src.root + '/scripts/**/*.js', '!' + this.src.root + '/scripts/**/_*.js', '!' + this.src.root + '/scripts/libs/*.js'];
+    this.src._js         = [this.src.root + '/scripts/**/_*.js'];
+    this.src.libs        = this.src.root + '/scripts/libs/*.js';
     this.src.images      = this.src.root + '/images/**/*.{jpg,jpeg,svg,png,gif}';
     this.src.files       = this.src.root + '/*.{html,txt}';
 
@@ -60,14 +61,14 @@ gulp.task('styles', function() {
 * Bundle all javascript files
 */
 gulp.task('scripts', function() {
-  gulp.src(paths.src.javascript)
+  gulp.src(paths.src._js)
     .pipe(concat('bundle.js'))
     .on('error', util.log)
     .pipe(uglify())
     .on('error', util.log)
     .pipe(gulp.dest(paths.dist.javascript));
 
-  gulp.src([paths.src.root + '/js/**/*.js', '!' + paths.src.root + '/js/**/_*.js'])
+  gulp.src(paths.src.js)
     .on('error', util.log)
     .pipe(uglify())
     .on('error', util.log)
@@ -106,6 +107,10 @@ gulp.task('clean:files', function(a) {
 
 gulp.task('distribute', function() {
   // TODO: Take all files, minify and stick them in ./dist
+});
+
+watch(paths.src.root + '/scripts/**/*.js', function() {
+  gulp.start('scripts');
 });
 
 gulp.task('watch', function() {

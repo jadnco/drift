@@ -12,6 +12,15 @@
 
 <script src="assets/scripts/bundle.js"></script>
 
+{{! If a slideshow is found, include it's scripts }}
+{{#if slideshow}}
+  <script src="assets/scripts/slideshow.js"></script>
+
+{{! No slideshow found, has to be remote }}
+{{else}}
+  <script src="assets/scripts/remote.js"></script>
+{{/if}}
+
 {{#if slideshow}}
   <script>listen();</script>
 
