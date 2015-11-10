@@ -19,8 +19,9 @@ var paths = {
   init: function() {
     this.src.sass        = this.src.root + '/scss/main.scss';
     this.src.templates   = this.src.root + '/**/*.hbs';
-    this.src.javascript  = [this.src.root + '/js/**/*.js','!' + this.src.root + '/js/libs/*.js'];
-    this.src.libs        = this.src.root + '/js/libs/*.js';
+    this.src.js          = [this.src.root + '/scripts/**/*.js', '!' + this.src.root + '/scripts/**/_*.js', '!' + this.src.root + '/scripts/libs/*.js'];
+    this.src._js         = [this.src.root + '/scripts/**/_*.js'];
+    this.src.libs        = this.src.root + '/scripts/libs/*.js';
     this.src.images      = this.src.root + '/images/**/*.{jpg,jpeg,svg,png,gif}';
     this.src.files       = this.src.root + '/*.{html,txt}';
 
@@ -58,45 +59,17 @@ gulp.task('styles', function() {
 });
 
 /*
-* Compile handlebars/partials into html
-*/
-gulp.task('templates', function() {
-  var opts = {
-    ignorePartials: true,
-    batch: ['src/partials']
-  };
-
-  gulp.src([paths.src.root + '/*.hbs'])
-    .pipe(handlebars(null, opts))
-    .on('error', util.log)
-    .pipe(rename({
-      extname: '.html'
-    }))
-    .on('error', util.log)
-    .pipe(gulp.dest(paths.dist.root))
-    .pipe(browserSync.reload({stream: true}));
-});
-
-gulp.task('slides', function() {
-  gulp.src([paths.src.root + '/slides/*.md'])
-    .pipe(markdown())
-    .on('error', util.log)
-    .pipe(gulp.dest('src/partials'))
-    .on('end', function() {
-      gulp.start('templates');
-    });
-});
-
-gulp.task('clean:slides', function(a) {
-  del(['src/partials/*.html'], a);
-});
-
-/*
 * Bundle all javascript files
 */
 gulp.task('scripts', function() {
-  gulp.src(paths.src.javascript)
+  gulp.src(paths.src._js)
     .pipe(concat('bundle.js'))
+    .on('error', util.log)
+    .pipe(uglify())
+    .on('error', util.log)
+    .pipe(gulp.dest(paths.dist.javascript));
+
+  gulp.src(paths.src.js)
     .on('error', util.log)
     .pipe(uglify())
     .on('error', util.log)
@@ -133,19 +106,17 @@ gulp.task('clean:files', function(a) {
   del([paths.dist.root + '/*.{html,txt}'], a);
 });
 
-watch('src/slides/*.md', function() {
-  gulp.start('clean:slides');
-  gulp.start('slides');
-});
-
 gulp.task('distribute', function() {
   // TODO: Take all files, minify and stick them in ./dist
+});
+
+watch(paths.src.root + '/scripts/**/*.js', function() {
+  gulp.start('scripts');
 });
 
 gulp.task('watch', function() {
   gulp.watch('src/scss/**/*.scss', ['styles']);
   gulp.watch(paths.src.javascript, ['scripts']);
-  gulp.watch(paths.src.templates, ['templates']);
   gulp.watch(paths.src.files, ['clean:files', 'files']);
   gulp.watch(paths.src.images, ['clean:images', 'images']);
 });
@@ -155,4 +126,4 @@ gulp.task('deploy', function() {
     .pipe(ghPages());
 });
 
-gulp.task('default', ['slides', 'watch', 'serve', 'images', 'files', 'styles', 'scripts', 'templates']);
+gulp.task('default', ['watch', 'serve', 'images', 'files', 'styles', 'scripts']);
