@@ -1,3 +1,6 @@
+// Functions that should be included with slideshow and remote
+
+
 var current, slideshow;
 
 /**
