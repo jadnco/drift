@@ -178,6 +178,20 @@ var resetSlides = function() {
 };
 
 /**
+ * Sroll and set a specified slide
+ * 
+ * @param  {int} location
+ * - location of slide to go to
+ * 
+ * @return {[type]}          [description]
+ */
+var toSlide = function(location) {
+  location = location || current;
+  
+  update({position: location});
+};
+
+/**
  * Listen for a change in the position
  * @return {[type]} [description]
  */

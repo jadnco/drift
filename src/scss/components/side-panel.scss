@@ -1,13 +1,16 @@
 #side-panel {
-  width: 100px;
   height: 100%;
+  overflow-y: scroll;
+  padding: ws(small);
 
   background: rgba(white, 0.9);
   border-right: 1px solid darken(white, 10%);
+  box-sizing: border-box;
 
   position: fixed;
   left: 0;
   top: 0;
+  bottom: 0;
   z-index: 999;
   opacity: 0;
   transform: translateX(-100px);
@@ -26,11 +29,16 @@
 
     li {
       width: 80px;
-      margin: ws(small) auto 0 auto;
+      display: block;
+      margin: 0 auto;
       text-align: center;
       border: 1px solid darken(white, 10%);
       border-radius: 5px;
       padding: ws(x-small) 0;
+
+      &:not(:first-of-type) {
+        margin-top: ws(medium);
+      }
     }
   }
 }

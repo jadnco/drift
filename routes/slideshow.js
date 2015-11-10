@@ -29,7 +29,7 @@ router.route('/:token')
         // we need to get the first value
         slideshow = body.slideshow[0];
 
-        // Get the individual slides based on slidshow token
+        // Get the individual slides based on slideshow token
         request.get(Route.slides(req.params.token), (error, _res, body) => {
           body = JSON.parse(body);
 

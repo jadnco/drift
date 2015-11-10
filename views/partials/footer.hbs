@@ -2,7 +2,7 @@
   <aside id="side-panel">
     <ul id="slide-thumbs">
       {{#each slideshow.slides}}
-        <li>{{location}}</li>
+        <li onclick="toSlide({{location}})">{{location}}</li>
       {{/each}}
     </ul>
   </aside>
