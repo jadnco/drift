@@ -18,8 +18,7 @@ var paths = {
   dist: { root: 'dist' },
   init: function() {
     this.src.sass        = this.src.root + '/scss/main.scss';
-    this.src.templates   = this.src.root + '/**/*.hbs';
-    this.src.javascript  = [this.src.root + '/js/**/*.js','!' + this.src.root + '/js/libs/*.js'];
+    this.src.javascript  = [this.src.root + '/js/**/_*.js','!' + this.src.root + '/js/libs/*.js'];
     this.src.libs        = this.src.root + '/js/libs/*.js';
     this.src.images      = this.src.root + '/images/**/*.{jpg,jpeg,svg,png,gif}';
     this.src.files       = this.src.root + '/*.{html,txt}';
@@ -68,6 +67,12 @@ gulp.task('scripts', function() {
     .on('error', util.log)
     .pipe(gulp.dest(paths.dist.javascript));
 
+  gulp.src([paths.src.root + '/js/**/*.js', '!' + paths.src.root + '/js/**/_*.js'])
+    .on('error', util.log)
+    .pipe(uglify())
+    .on('error', util.log)
+    .pipe(gulp.dest(paths.dist.javascript));
+
   /*
   * Uglify JS libs and move to dist folder
   */
@@ -99,11 +104,6 @@ gulp.task('clean:files', function(a) {
   del([paths.dist.root + '/*.{html,txt}'], a);
 });
 
-watch('src/slides/*.md', function() {
-  gulp.start('clean:slides');
-  gulp.start('slides');
-});
-
 gulp.task('distribute', function() {
   // TODO: Take all files, minify and stick them in ./dist
 });
@@ -111,7 +111,6 @@ gulp.task('distribute', function() {
 gulp.task('watch', function() {
   gulp.watch('src/scss/**/*.scss', ['styles']);
   gulp.watch(paths.src.javascript, ['scripts']);
-  gulp.watch(paths.src.templates, ['templates']);
   gulp.watch(paths.src.files, ['clean:files', 'files']);
   gulp.watch(paths.src.images, ['clean:images', 'images']);
 });

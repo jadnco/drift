@@ -1,0 +1,21 @@
+input[type=checkbox] {
+  display: none;
+}
+
+input[type=checkbox]:checked ~ .edit-item {
+  opacity: 1;
+  visibility: visible;
+}
+
+.editor-toggle-btn {
+  width: 32px;
+  height: 28px;
+  background: url(../images/burger.svg) no-repeat;
+  background-size: 100%;
+  margin-top: 27px;
+}
+
+.edit-item {
+  opacity: 0;
+  visibility: hidden;
+}

@@ -196,18 +196,18 @@ var toSlide = function(location) {
  * @return {[type]} [description]
  */
 var listen = function() {
-  setTimeout(function() {
-    get(function(res) {
-      // Update current if not same as response
-      if (res.position !== current) {
-        current = res.position;
+  // setTimeout(function() {
+  //   get(function(res) {
+  //     // Update current if not same as response
+  //     if (res.position !== current) {
+  //       current = res.position;
 
-        animate(current);
-      }
+  //       animate(current);
+  //     }
 
-      listen();
-    });
-  }, 3000);
+  //     listen();
+  //   });
+  // }, 3000);
 };
 
 /**
