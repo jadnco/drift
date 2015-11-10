@@ -58,40 +58,6 @@ gulp.task('styles', function() {
 });
 
 /*
-* Compile handlebars/partials into html
-*/
-gulp.task('templates', function() {
-  var opts = {
-    ignorePartials: true,
-    batch: ['src/partials']
-  };
-
-  gulp.src([paths.src.root + '/*.hbs'])
-    .pipe(handlebars(null, opts))
-    .on('error', util.log)
-    .pipe(rename({
-      extname: '.html'
-    }))
-    .on('error', util.log)
-    .pipe(gulp.dest(paths.dist.root))
-    .pipe(browserSync.reload({stream: true}));
-});
-
-gulp.task('slides', function() {
-  gulp.src([paths.src.root + '/slides/*.md'])
-    .pipe(markdown())
-    .on('error', util.log)
-    .pipe(gulp.dest('src/partials'))
-    .on('end', function() {
-      gulp.start('templates');
-    });
-});
-
-gulp.task('clean:slides', function(a) {
-  del(['src/partials/*.html'], a);
-});
-
-/*
 * Bundle all javascript files
 */
 gulp.task('scripts', function() {
@@ -155,4 +121,4 @@ gulp.task('deploy', function() {
     .pipe(ghPages());
 });
 
-gulp.task('default', ['slides', 'watch', 'serve', 'images', 'files', 'styles', 'scripts', 'templates']);
+gulp.task('default', ['watch', 'serve', 'images', 'files', 'styles', 'scripts']);
