@@ -199,18 +199,18 @@ var toSlide = function(location) {
  * @return {[type]} [description]
  */
 var listen = function() {
-  setTimeout(function() {
-    get(function(res) {
-      // Update current if not same as response
-      if (res.position !== current) {
-        current = res.position;
+  // setTimeout(function() {
+  //   get(function(res) {
+  //     // Update current if not same as response
+  //     if (res.position !== current) {
+  //       current = res.position;
 
-        animate(current);
-      }
+  //       animate(current);
+  //     }
 
-      listen();
-    });
-  }, 3000);
+  //     listen();
+  //   });
+  // }, 3000);
 };
 
 /**
@@ -224,3 +224,16 @@ var init = function() {
     current = res ? res.position : current;
   });
 }();
+
+/**
+ * Generate a random integer identifier
+ * 
+ * @return {string}
+ * - the random identifier
+ */
+var generateId = function() {
+  var max = 9999;
+  var min = 1000;
+
+  return (Math.floor(Math.random() * (max - min + 1)) + min).toString();
+};

@@ -110,6 +110,7 @@ gulp.task('distribute', function() {
 });
 
 watch(paths.src.root + '/scripts/**/*.js', function() {
+  console.log('scripts started');
   gulp.start('scripts');
 });
 

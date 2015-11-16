@@ -2,13 +2,19 @@
 
 {{> header}}
 
+
+{{! Just some stuff for debugging }}
 {{#if slideshow}}
   <div class="info">
     <div>Token: {{token}}</div>
     <div>Slides: {{slideshow.slides.length}}</div>
     <div>Position: {{slideshow.position}}</div>
   </div>
+{{/if}}
 
+<main id="slideshow">
+
+{{#if slideshow}}
   {{#each slideshow.slides}}
     <section class="slide slide-{{location}}">
       {{{content}}}
@@ -18,5 +24,7 @@
 {{else}}
   <div>There is no slidshow.</div>
 {{/if}}
+
+</main>
 
 {{> footer slideshow=slideshow}}
