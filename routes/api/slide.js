@@ -42,7 +42,7 @@ module.exports.getAll = (query, res) => {
 };
 
 module.exports.get = (query, res) => {
-  Slide.find(query, (err, slide) => {
+  Slide.findById(query, (err, slide) => {
     if (err) return res.send(err);
 
     res.json({slide: slide});
@@ -55,10 +55,10 @@ module.exports.update = (query, req, res) => {
   // Set the modified date
   updated.modified = Date.now();
 
-  Slide.findOneAndUpdate(query, {$set: updated}, (err, slide) => {
+  Slide.findByIdAndUpdate(query, {$set: updated}, (err, slide) => {
     if (err) return res.send(err);
 
-    res.sendStatus(200);
+    res.json(slide);
   });
 };
 

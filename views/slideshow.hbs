@@ -16,7 +16,7 @@
 
 {{#if slideshow}}
   {{#each slideshow.slides}}
-    <section class="slide slide-{{location}}">
+    <section data-id="{{_id}}" data-location="{{location}}" class="slide">
       {{{content}}}
     </section>
   {{/each}}

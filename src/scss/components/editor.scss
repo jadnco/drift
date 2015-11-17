@@ -10,16 +10,20 @@ input[type=checkbox]:checked ~ .edit-item {
 .editor-toggle-btn {
   width: 32px;
   height: 28px;
-  background: url(../images/burger.svg) no-repeat;
+  background: red;
   background-size: 100%;
-  margin-top: 27px;
-}
+  position: fixed;
+  bottom: ws(small);
+  left: ws(small);
 
-.edit-item {
-  opacity: 0;
-  visibility: hidden;
+  z-index: 999;
 }
 
 .editable {
-  outline: 1px solid red;
+  border: 1px solid red;
+  background: rgba(red, 0.9);
+
+  * {
+    outline: 1px solid red;
+  }
 }

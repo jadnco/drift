@@ -1,62 +1,24 @@
-/**
- * Get all slideshow nodes
- * 
- * @return {[type]} [description]
- */
-var nodes = function() {
-  var slides = document.getElementById('slideshow').children,
-      nodes = [];
+var isEditing = false,
+    slides = [],
+    timeout;
 
-  for (var i = 0; i < slides.length; i++) {
-    var children = slides[i].children;
+var getSlides = function() {
+  var _slides = document.getElementById('slideshow').children;
 
-    for (var j = 0; j < children.length; j++) {
-
-      // Push to nodes array
-      nodes.push(children[j]);
-    }
+  for (var i = 0; i < _slides.length; i++) {
+    slides.push(_slides[i]);
   }
-
-  return nodes;
 }();
 
-/**
- * Get all content nodes
- * 
- * @param  {[type]} ) {}[description]
- * @return {[type]}   [description]
- */
-var contents = function() {
-  var slides = document.getElementById('slideshow').children,
-      contents = {};
+var save = function(id, node) {
 
-  for (var i = 0; i < slides.length; i++) {
-    var children = slides[i].children;
+  // Convert the nodes into a string 
+  var content = Array.prototype.map.call(node.children, function(node) {
+    return node.outerHTML;
+  }).join('');
 
-    for (var j = 0; j < children.length; j++) {
-      var key;
-
-      // Check if data-id isn't already set
-      if (!children[j].dataset.id) {
-        key = generateId();
-
-        // Set data-id attribute
-        children[j].dataset.id = key;
-
-        // Store the node object with a unique key
-        contents[key] = children[j].textContent;
-      }
-
-      else {
-
-        // Store the node object with already generated key
-        contents[children[j].dataset.id] = children[j].textContent;
-      }
-    }
-  }
-
-  return contents; 
-}();
+  update({content: content}, 'slide', id);
+};
 
 /**
  * Edit some content
@@ -72,12 +34,23 @@ var contents = function() {
 var edit = function(event) {
   // TODO: Change property based on id value,
   // then save
-  var id = event.target.dataset.id,
+  var slideId = event.target.dataset.id,
+      id      = event.target.dataset.id,
       content = event.target;
 
+  if (isEditing) console.log('event:', event.target);
   console.log('edit called');
-  console.log('event:', event.target);
+
+  // If a timeout has already been set, clear it
+  if (timeout) clearTimeout(timeout);
+
+  // Set a 500ms debounce timeout
+  timeout = setTimeout(function() {
+    save(slideId, event.target);
+  }, 500);
 };
+
+
 
 /**
  * Make contents of slide editable
@@ -87,31 +60,34 @@ var edit = function(event) {
 var makeEditable = function(checkbox) {
   // TODO: Loop through nodes,
   // add edit method to onclick for node
-  var _nodes = nodes || [];
+  
+  var _slides = slides || [];
 
-  for (var i = 0; i < _nodes.length; i++) {
+  for (var i = 0; i < slides.length; i++)  {
 
-    // Need to make editable
     if (checkbox.checked) {
 
       // Add the editable class
-      _nodes[i].className = 'editable';
+      _slides[i].className += ' editable';
 
-      // Add edit method to onclick event
-      _nodes[i].onclick = edit;
+      // Make the content editable
+      _slides[i].contentEditable = true;
 
-      // Make editable
-      _nodes[i].contentEditable = true;
+      // Add edit method to keypress event
+      _slides[i].onkeypress = edit;
+
+      isEditing = true;
     }
 
-    // Already editable, so remove
     else {
 
-      // Remove the editable class
-      _nodes[i].className = '';
+      // Reset the class names
+      _slides[i].className = 'slide';
 
-      // Remove editable
-      _nodes[i].contentEditable = false;
+      // Slide content is no longer editable
+      _slides[i].contentEditable = false;
+
+      isEditing = false;
     }
-  }
+  } 
 };

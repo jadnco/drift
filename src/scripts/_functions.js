@@ -26,16 +26,24 @@ var token = function() {
  * 
  * @return {[type]}         [description]
  */
-var update = function(content) {
-  var http = new XMLHttpRequest(),
-      url  = '/api/slideshow/';
+var update = function(content, type, identifier) {
+  var http    = new XMLHttpRequest(),
+      request = {},
+      url     = '/api/';
 
-  var request = {
-    slideshow: content
-  };
+  type        = type || 'slideshow';
+  identifier  = identifier || token;
+
+  url += type;
+
+  request[type] = content;
 
   // Open the request
-  http.open("PUT", url + token, true);
+  http.open("PUT", url + '/' + identifier, true);
+
+  console.log('request object', request);
+
+  console.log('update sent to', url + '/' + identifier);
 
   // Make sure the content is sent as json data
   http.setRequestHeader("Content-type", "application/json");
@@ -232,8 +240,18 @@ var init = function() {
  * - the random identifier
  */
 var generateId = function() {
-  var max = 9999;
-  var min = 1000;
+  var chars = ['a', 'b', 'c', 'x', 'y', 'z'],
+      id = '';
 
-  return (Math.floor(Math.random() * (max - min + 1)) + min).toString();
+  for (var i = 0; i < 5; i++) {
+    if (i % 2) {
+      id += Math.floor(Math.random() * 9);
+    }
+
+    else {
+      id += chars[Math.floor(Math.random() * chars.length)];
+    }
+  }
+
+  return id;
 };

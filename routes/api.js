@@ -24,6 +24,17 @@ router.route('/slideshow/:token/slides')
     slides.add(_query, req, res);
   });
 
+router.route('/slide/:id')
+
+  .get((req, res) => {
+    slides.get(req.params.id, res);
+  })
+
+  // Create a new slideshow
+  .put((req, res) => {
+    slides.update(req.params.id, req, res);
+  });
+
 router.route('/slideshow/:token')
 
   // Get the JSON object
