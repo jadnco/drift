@@ -46,7 +46,9 @@ var edit = function(event) {
 
   // Set a 500ms debounce timeout
   timeout = setTimeout(function() {
-    save(slideId, event.target);
+    serialize(slideId, event.target, function(serialized) {
+      save(slideId, serialized);
+    });
   }, 500);
 };
 
@@ -90,4 +92,24 @@ var makeEditable = function(checkbox) {
       isEditing = false;
     }
   } 
+};
+
+var serialize = function(id, node, callback) {
+  var serialized,
+      content = node.children
+      listItem = (/(-|\*)\s(.+)/g);
+
+  for (var i = 0; i < content.length; i++) {
+    
+    // Is a list item
+    if (listItem.test(content[i].textContent)) {
+      content[i].innerHTML = content[i].textContent.replace(listItem, '<li>$2</li>');
+    }
+  }
+
+  console.log('serialize node', content);
+  // TODO:
+  // - Take input, remove empty divs etc.
+  // - Look for ul, li's etc.
+  return callback(node);
 };

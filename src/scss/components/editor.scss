@@ -8,8 +8,8 @@ input[type=checkbox]:checked ~ .edit-item {
 }
 
 .editor-toggle-btn {
-  width: 32px;
-  height: 28px;
+  // width: 32px;
+  // height: 28px;
   background: red;
   background-size: 100%;
   position: fixed;
@@ -21,9 +21,8 @@ input[type=checkbox]:checked ~ .edit-item {
 
 .editable {
   border: 1px solid red;
-  background: rgba(red, 0.9);
 
   * {
-    outline: 1px solid red;
+    outline: 1px solid rgba(black, 0.4);
   }
 }

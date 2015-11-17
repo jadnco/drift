@@ -41,10 +41,6 @@ var update = function(content, type, identifier) {
   // Open the request
   http.open("PUT", url + '/' + identifier, true);
 
-  console.log('request object', request);
-
-  console.log('update sent to', url + '/' + identifier);
-
   // Make sure the content is sent as json data
   http.setRequestHeader("Content-type", "application/json");
 
