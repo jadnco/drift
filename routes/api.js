@@ -3,10 +3,12 @@
 'use strict';
 
 const express    = require('express');
-const router     = express.Router();
+
 const slideshows = require('./api/slideshow');
 const slides     = require('./api/slide');
 const query      = require('../functions').query;
+
+const router = express.Router();
 
 router.route('/slideshow/:token/slides')
 
@@ -57,7 +59,7 @@ router.route('/slideshow/:token')
   .delete((req, res) => {
     // Create query, can select w/ id or token
     let _query = query(req.params.token, {token: req.params.token});
-    
+
     slideshows.delete(_query, res);
   });
 

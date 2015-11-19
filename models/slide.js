@@ -12,8 +12,8 @@ let SlideSchema = new Schema({
 
   slideshow: {
     type: Schema.Types.ObjectId,
-    ref: 'Slideshow'
-  }
+    ref: 'Slideshow',
+  },
 });
 
 module.exports = mongoose.model('Slide', SlideSchema);

@@ -1,10 +1,9 @@
 'use strict';
 
-const fns       = require('../../functions.js');
 const mongoose  = require('mongoose');
-const Slideshow = require('../../models/slideshow');
 
-const generateToken = require('../../functions').generateToken;
+const fns       = require('../../functions');
+const Slideshow = require('../../models/slideshow');
 
 // Create a new slideshow object
 module.exports.add = (req, res) => {
@@ -12,7 +11,7 @@ module.exports.add = (req, res) => {
 
   // Generate a token value
   if (slideshow.token === undefined) {
-    slideshow.token = generateToken();
+    slideshow.token = fns.generateToken();
   }
 
   slideshow.save((err) => {

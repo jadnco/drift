@@ -1,7 +1,8 @@
 'use strict';
 
-const fns       = require('../../functions.js');
 const mongoose  = require('mongoose');
+
+const fns       = require('../../functions');
 const Slideshow = require('../../models/slideshow');
 const Slide     = require('../../models/slide');
 
@@ -25,7 +26,7 @@ module.exports.add = (query, req, res) => {
         res.json({slide: slide});
       });
     });
-  }); 
+  });
 };
 
 // Get all slideshow objects
