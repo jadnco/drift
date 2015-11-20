@@ -98,12 +98,12 @@ var serialize = function(id, node, callback) {
   var content = node.children;
   var listItem = (/^(-|\*)\s(.+)$/g);
   var headers = headers = {
-    one: (/^(#)\s(.+)$/g),
-    two: (/^(##)\s(.+)$/g),
-    three: '',
-    four: '',
-    five: '',
-    six: '',
+    one:   (/^(#)\s(.+)$/g),
+    two:   (/^(##)\s(.+)$/g),
+    three: (/^(###)\s(.+)$/g),
+    four:  (/^(####)\s(.+)$/g),
+    five:  (/^(#####)\s(.+)$/g),
+    six:   (/^(######)\s(.+)$/g),
   };
 
   for (var i = 0; i < content.length; i++) {
