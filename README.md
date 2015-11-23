@@ -36,17 +36,19 @@ Run the default Gulp task to get started:
 gulp
 ```
 
-BrowserSync will automagically inject any changes you make to the stylesheets. You can view the website at one of the given access URLs:
+Next, make sure to start an instance of MongoDB:
 
 ```sh
-[BS] Access URLs:
- ----------------------------------
-       Local: http://localhost:3000
-    External: http://10.0.X.XX:3000
- ----------------------------------
+sudo mongod
 ```
 
-The `External` URL is disabled by default, because we don't want randos watching us work. It can be enabled by setting the `online` value to `true` inside `gulpfile.js`.
+Once the database is up and running, you can start the app"
+
+```sh
+node app.js
+```
+
+For development, I am using [nodemon](http://nodemon.io) to listen for any changes in the scripts. Otherwise, the server would need to be restarted manually for every change.
 
 If you are working within a GitHub repo you can deploy your project, at any time, to a `gh-pages` branch by running:
 
