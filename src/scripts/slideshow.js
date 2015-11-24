@@ -91,63 +91,165 @@ var makeEditable = function(checkbox) {
   }
 };
 
+/**
+ * Move the cursor to the end of content
+ *
+ * @param {node} element
+ * - the element with contenteditable
+ */
+var toContentEnd = function(element) {
+  var range;
+  var selection;
+
+  if (document.createRange) {
+    range = document.createRange();
+    range.selectNodeContents(element);
+    range.collapse(false);
+    selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+  }
+};
+
+/**
+ * Convert a string of text into an HTML list item
+ * using Markdown style syntax
+ *
+ * @param {node} content
+ * - the node object to check and convert
+ *
+ * @return {string}
+ * - the converted HTML or original content
+ */
+var toListItem = function(content) {
+  var expression = (/^(-|\*)\s(.+)$/g);
+  var output;
+
+  // Make sure content is a list item
+  if (expression.test(content)) {
+    output = content.replace(expression, '<li>$2</li>');
+  }
+
+  /**
+   * TODO: Check if list item is empty
+   */
+
+  return output || content;
+};
+
+/**
+ * Convert a string of text into an HTML heading
+ * using Markdown style syntax
+ *
+ * @param {node} content
+ * - the node object to check and convert
+ *
+ * @return {string}
+ * - the converted HTML or original content
+ */
+var toHeading = function(content) {
+  var output;
+
+  var headers = {
+    one: {
+      expression: (/^(#)\s(.+)$/g),
+      replacement: '<h1>$2</h1>',
+    },
+    two: {
+      expression: (/^(##)\s(.+)$/g),
+      replacement: '<h2>$2</h2>',
+    },
+    three: {
+      expression: (/^(###)\s(.+)$/g),
+      replacement: '<h3>$2</h3>',
+    },
+    four: {
+      expression: (/^(####)\s(.+)$/g),
+      replacement: '<h4>$2</h4>',
+    },
+    five: {
+      expression: (/^(#####)\s(.+)$/g),
+      replacement: '<h5>$2</h5>',
+    },
+    six: {
+      expression: (/^(######)\s(.+)$/g),
+      replacement: '<h6>$2</h6>',
+    },
+  };
+
+  for (var head in headers) {
+
+    // Check for a heading match
+    if (headers[head].expression.test(content)) {
+      output = content.replace(headers[head].expression, headers[head].replacement);
+
+      // Can only have a single heading level
+      break;
+    }
+  }
+
+  return output || content;
+};
+
+/**
+ * Remove any lines of empty list items
+ * @param  {[type]} nodes [description]
+ * @return {[type]}       [description]
+ */
+var removeEmptyContent = function(nodes) {
+
+};
+
 var serialize = function(id, node, callback) {
   var serialized;
   var replacement;
 
   var content = node.children;
-  var listItem = (/^(-|\*)\s(.+)$/g);
-  var headers = headers = {
-    one:   (/^(#)\s(.+)$/g),
-    two:   (/^(##)\s(.+)$/g),
-    three: (/^(###)\s(.+)$/g),
-    four:  (/^(####)\s(.+)$/g),
-    five:  (/^(#####)\s(.+)$/g),
-    six:   (/^(######)\s(.+)$/g),
-  };
+  var emptyItem = (/^(<br>|<\/li>)$/g);
 
   for (var i = 0; i < content.length; i++) {
 
-    // Is a list item
-    if (listItem.test(content[i].textContent)) {
-      content[i].innerHTML = content[i].textContent.replace(listItem, '<li>$2</li>');
+    var children = content[i].children;
 
-      // No need to check anything else
-      continue;
-    }
+    // Convert any headings into proper elements
+    content[i].innerHTML = toHeading(content[i].innerHTML);
 
-    // Check for headings
-    for (var heading in headers) {
-      console.log(headers[heading]);
+    // Convert any list items into proper elements
+    content[i].innerHTML = toListItem(content[i].innerHTML);
 
-      switch (heading) {
-        case 'one':   replacement = '<h1>$2</h1>'; break;
-        case 'two':   replacement = '<h2>$2</h2>'; break;
-        case 'three': replacement = '<h3>$2</h3>'; break;
-        case 'four':  replacement = '<h4>$2</h4>'; break;
-        case 'five':  replacement = '<h5>$2</h5>'; break;
-        case 'six':   replacement = '<h6>$2</h6>'; break;
-        default:      replacement = '$2';
-      }
+    removeEmptyContent(children);
 
-      if (typeof headers[heading] === 'object' && headers[heading].test(content[i].textContent)) {
-        content[i].innerHTML = content[i].textContent.replace(headers[heading], replacement);
+    for (var child in children) {
 
-        console.log(content[i].textContent, replacement);
+      if (children.hasOwnProperty(child)) {
 
-        // Can only have a single heading level
-        break;
+        // No need to check if there's no content
+        if (!children[child].innerHTML) continue;
+
+        // Is an empty item
+        if (emptyItem.test(children[child].innerHTML)) {
+          console.log('empty child, removed', children[child].outerHTML);
+          //children[child].innerHTML = '';
+
+          console.log('parent of empty', children[child].parentNode);
+
+          children[child].parentNode.removeChild(children[child]);
+          
+        } else console.log('child', children[child].outerHTML);
       }
     }
 
-    // TODO:
-    // - Check for heading w/ level (#, ##, ###, ####, etc.)
+    
+
+    // Check to see if text content is empty
+    // if (emptyItem.test(content[i])) {
+    //   console.log('empty list item', content[i]);
+    //   //content[i].innerHTML = ' ';
+    // }
   }
 
-  console.log('serialize node', content);
+  // Move the cursor to the end of the content
+  toContentEnd(node);
 
-  // TODO:
-  // - Take input, remove empty divs etc.
-  // - Look for ul, li's etc.
   return callback(node);
 };
