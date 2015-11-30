@@ -72,8 +72,8 @@ gulp.task('scripts', () => {
 
   gulp.src(paths.src.js)
     .on('error', util.log)
-    .pipe(uglify())
-    .on('error', util.log)
+    // .pipe(uglify())
+    // .on('error', util.log)
     .pipe(gulp.dest(paths.dist.javascript));
 
   /*

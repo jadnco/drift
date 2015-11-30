@@ -1,6 +1,5 @@
 var timeout;
 
-var isEditing = false;
 var slides = [];
 
 var getSlides = (function() {
@@ -33,14 +32,7 @@ var save = function(id, node) {
  * @return {[type]}          [description]
  */
 var edit = function(event) {
-  // TODO: Change property based on id value,
-
-  // then save
   var slideId = event.target.dataset.id;
-  var id = event.target.dataset.id;
-  var content = event.target;
-
-  //if (isEditing);
 
   // If a timeout has already been set, clear it
   if (timeout) clearTimeout(timeout);
@@ -54,14 +46,12 @@ var edit = function(event) {
 };
 
 /**
- * Make contents of slide editable
+ * Make contents of a slide editable
  *
- * @return {[type]} [description]
+ * @param {object} checkbox
+ * - a checkbox that toggles the edit state
  */
 var makeEditable = function(checkbox) {
-  // TODO: Loop through nodes,
-  // add edit method to onclick for node
-
   var _slides = slides || [];
 
   for (var i = 0; i < slides.length; i++)  {
@@ -76,8 +66,6 @@ var makeEditable = function(checkbox) {
 
       // Add edit method to keypress event
       _slides[i].onkeypress = edit;
-
-      isEditing = true;
     } else {
 
       // Reset the class names
@@ -85,8 +73,6 @@ var makeEditable = function(checkbox) {
 
       // Slide content is no longer editable
       _slides[i].contentEditable = false;
-
-      isEditing = false;
     }
   }
 };
@@ -192,12 +178,46 @@ var toHeading = function(content) {
 };
 
 /**
- * Remove any lines of empty list items
+ * Remove any lines of empty nodes
  * @param  {[type]} nodes [description]
  * @return {[type]}       [description]
  */
-var removeEmptyContent = function(nodes) {
+var removeEmptyContent = function(nodes, callback) {
+  var current = nodes;
+  var children = nodes.children || {};
 
+  var emptyItem = (/^(<br>|<\/li>)$/g);
+
+  for (var node in children) {
+
+    if (children.hasOwnProperty(node)) {
+
+      // No need to check if there's no content
+      if (!children[node].innerHTML) continue;
+
+      // There are children, so set new current node
+      current = children[node];
+      console.log('current set to', children[node]);
+
+      // Is an empty item
+      if (emptyItem.test(children[node].innerHTML)) {
+
+        current = children[node].nextSibling;
+
+        //console.log('current:', current);
+
+        children[node].outerHTML = '<br>';
+
+        children[node].nextSibling.outerHTML = '<br>';
+
+        //children[node].parentNode.removeChild(children[node]);
+        console.log('removed', children[node].outerHTML);
+        
+      } else console.log('child', children[node].outerHTML);
+    }
+  }
+
+  return callback(current);
 };
 
 var serialize = function(id, node, callback) {
@@ -205,7 +225,9 @@ var serialize = function(id, node, callback) {
   var replacement;
 
   var content = node.children;
-  var emptyItem = (/^(<br>|<\/li>)$/g);
+  var breakNode = '<br>';
+
+  var currentNode;
 
   for (var i = 0; i < content.length; i++) {
 
@@ -217,27 +239,13 @@ var serialize = function(id, node, callback) {
     // Convert any list items into proper elements
     content[i].innerHTML = toListItem(content[i].innerHTML);
 
-    removeEmptyContent(children);
+    currentNode = content[i];
 
-    for (var child in children) {
+    
 
-      if (children.hasOwnProperty(child)) {
-
-        // No need to check if there's no content
-        if (!children[child].innerHTML) continue;
-
-        // Is an empty item
-        if (emptyItem.test(children[child].innerHTML)) {
-          console.log('empty child, removed', children[child].outerHTML);
-          //children[child].innerHTML = '';
-
-          console.log('parent of empty', children[child].parentNode);
-
-          children[child].parentNode.removeChild(children[child]);
-          
-        } else console.log('child', children[child].outerHTML);
-      }
-    }
+    // TODO:
+    // Replace with function that takes callback
+    // run tocontentend in callback function
 
     
 
@@ -248,8 +256,11 @@ var serialize = function(id, node, callback) {
     // }
   }
 
-  // Move the cursor to the end of the content
-  toContentEnd(node);
+  removeEmptyContent(currentNode, function(current) {
+    console.log('current node', current);
+    // Move cursor to end of current line
+    toContentEnd(current);
+  });
 
   return callback(node);
 };
