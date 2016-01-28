@@ -1,15 +1,12 @@
-/* jshint node: true */
-
 'use strict';
 
 const express = require('express');
-const router  = express.Router();
-
 const request = require('request');
 
-const fns = require('../functions');
-
+const fns   = require('../functions');
 const Route = require('../route');
+
+const router = express.Router();
 
 router.route('/')
 
@@ -31,7 +28,9 @@ router.route('/')
         // Render template with data
         res.render('remote', {token: req.params.token, slideshow: slideshow});
       });
-    }, () => {
+    },
+
+    () => {
       res.render('remote', {token: req.params.token, error: 'Invalid token'});
     });
   });

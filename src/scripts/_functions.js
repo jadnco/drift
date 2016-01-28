@@ -26,16 +26,20 @@ var token = function() {
  * 
  * @return {[type]}         [description]
  */
-var update = function(content) {
-  var http = new XMLHttpRequest(),
-      url  = '/api/slideshow/';
+var update = function(content, type, identifier) {
+  var http    = new XMLHttpRequest(),
+      request = {},
+      url     = '/api/';
 
-  var request = {
-    slideshow: content
-  };
+  type        = type || 'slideshow';
+  identifier  = identifier || token;
+
+  url += type;
+
+  request[type] = content;
 
   // Open the request
-  http.open("PUT", url + token, true);
+  http.open("PUT", url + '/' + identifier, true);
 
   // Make sure the content is sent as json data
   http.setRequestHeader("Content-type", "application/json");
@@ -199,18 +203,18 @@ var toSlide = function(location) {
  * @return {[type]} [description]
  */
 var listen = function() {
-  setTimeout(function() {
-    get(function(res) {
-      // Update current if not same as response
-      if (res.position !== current) {
-        current = res.position;
+  // setTimeout(function() {
+  //   get(function(res) {
+  //     // Update current if not same as response
+  //     if (res.position !== current) {
+  //       current = res.position;
 
-        animate(current);
-      }
+  //       animate(current);
+  //     }
 
-      listen();
-    });
-  }, 3000);
+  //     listen();
+  //   });
+  // }, 3000);
 };
 
 /**
@@ -224,3 +228,26 @@ var init = function() {
     current = res ? res.position : current;
   });
 }();
+
+/**
+ * Generate a random integer identifier
+ * 
+ * @return {string}
+ * - the random identifier
+ */
+var generateId = function() {
+  var chars = ['a', 'b', 'c', 'x', 'y', 'z'],
+      id = '';
+
+  for (var i = 0; i < 5; i++) {
+    if (i % 2) {
+      id += Math.floor(Math.random() * 9);
+    }
+
+    else {
+      id += chars[Math.floor(Math.random() * chars.length)];
+    }
+  }
+
+  return id;
+};

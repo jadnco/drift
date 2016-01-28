@@ -1,24 +1,25 @@
-var gulp        = require('gulp'),
-    del         = require('del'),
-    util        = require('gulp-util'),
-    sass        = require('gulp-sass'),
-    prefixer    = require('gulp-autoprefixer'),
-    uglify      = require('gulp-uglify'),
-    concat      = require('gulp-concat'),
-    rename      = require('gulp-rename'),
-    handlebars  = require('gulp-compile-handlebars'),
-    browserSync = require('browser-sync'),
-    ghPages     = require('gulp-gh-pages'),
-    sassGlob    = require('gulp-sass-bulk-import'),
-    markdown    = require('gulp-markdown'),
-    watch       = require('gulp-watch');
+'use strict';
 
-var paths = {
+const gulp        = require('gulp');
+const del         = require('del');
+const util        = require('gulp-util');
+const sass        = require('gulp-sass');
+const prefixer    = require('gulp-autoprefixer');
+const uglify      = require('gulp-uglify');
+const concat      = require('gulp-concat');
+const rename      = require('gulp-rename');
+const handlebars  = require('gulp-compile-handlebars');
+const browserSync = require('browser-sync');
+const ghPages     = require('gulp-gh-pages');
+const sassGlob    = require('gulp-sass-bulk-import');
+const markdown    = require('gulp-markdown');
+const watch       = require('gulp-watch');
+
+let paths = {
   src: { root: 'src' },
   dist: { root: 'dist' },
   init: function() {
     this.src.sass        = this.src.root + '/scss/main.scss';
-    this.src.templates   = this.src.root + '/**/*.hbs';
     this.src.js          = [this.src.root + '/scripts/**/*.js', '!' + this.src.root + '/scripts/**/_*.js', '!' + this.src.root + '/scripts/libs/*.js'];
     this.src._js         = [this.src.root + '/scripts/**/_*.js'];
     this.src.libs        = this.src.root + '/scripts/libs/*.js';
@@ -29,27 +30,27 @@ var paths = {
     this.dist.images     = 'assets/images';
     this.dist.javascript = 'assets/scripts';
     this.dist.libs       = 'assets/scripts/libs';
-    
+
     return this;
-  }
+  },
 }.init();
 
-gulp.task('serve', function() {
+gulp.task('serve', () => {
   browserSync.init({
     server: paths.dist.root,
     ui: false,
     open: false,
     notify: false,
-    online: false
+    online: false,
   });
 });
 
-gulp.task('styles', function() {
+gulp.task('styles', () => {
   gulp.src([paths.src.sass])
     .pipe(sassGlob())
     .on('error', util.log)
     .pipe(sass({
-      includePaths: ['src/scss']
+      includePaths: ['src/scss'],
     }))
     .on('error', util.log)
     .pipe(prefixer('last 2 versions'))
@@ -61,7 +62,7 @@ gulp.task('styles', function() {
 /*
 * Bundle all javascript files
 */
-gulp.task('scripts', function() {
+gulp.task('scripts', () => {
   gulp.src(paths.src._js)
     .pipe(concat('bundle.js'))
     .on('error', util.log)
@@ -71,8 +72,8 @@ gulp.task('scripts', function() {
 
   gulp.src(paths.src.js)
     .on('error', util.log)
-    .pipe(uglify())
-    .on('error', util.log)
+    // .pipe(uglify())
+    // .on('error', util.log)
     .pipe(gulp.dest(paths.dist.javascript));
 
   /*
@@ -82,46 +83,46 @@ gulp.task('scripts', function() {
     .pipe(uglify())
     .on('error', util.log)
     .pipe(rename({
-      suffix: '.min'
+      suffix: '.min',
     }))
     .on('error', util.log)
     .pipe(gulp.dest(paths.dist.libs));
 });
 
-gulp.task('images', function() {
+gulp.task('images', () => {
   gulp.src([paths.src.images])
     .pipe(gulp.dest(paths.dist.images));
 });
 
-gulp.task('clean:images', function(a) {
+gulp.task('clean:images', (a) => {
   del([paths.dist.images], a);
 });
 
-gulp.task('files', function() {
+gulp.task('files', () => {
   gulp.src([paths.src.files])
     .pipe(gulp.dest(paths.dist.root));
 });
 
-gulp.task('clean:files', function(a) {
-  del([paths.dist.root + '/*.{html,txt}'], a);
+gulp.task('clean:files', (cb) => {
+  del([paths.dist.root + '/*.{html,txt}'], cb);
 });
 
-gulp.task('distribute', function() {
+gulp.task('distribute', () => {
   // TODO: Take all files, minify and stick them in ./dist
 });
 
-watch(paths.src.root + '/scripts/**/*.js', function() {
+watch(paths.src.root + '/scripts/**/*.js', () => {
   gulp.start('scripts');
 });
 
-gulp.task('watch', function() {
+gulp.task('watch', () => {
   gulp.watch('src/scss/**/*.scss', ['styles']);
   gulp.watch(paths.src.javascript, ['scripts']);
   gulp.watch(paths.src.files, ['clean:files', 'files']);
   gulp.watch(paths.src.images, ['clean:images', 'images']);
 });
 
-gulp.task('deploy', function() {
+gulp.task('deploy', () => {
   return gulp.src([paths.dist.root + '/**/*'])
     .pipe(ghPages());
 });

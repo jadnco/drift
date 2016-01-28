@@ -1,0 +1,28 @@
+input[type=checkbox] {
+  display: none;
+}
+
+input[type=checkbox]:checked ~ .edit-item {
+  opacity: 1;
+  visibility: visible;
+}
+
+.editor-toggle-btn {
+  // width: 32px;
+  // height: 28px;
+  background: red;
+  background-size: 100%;
+  position: fixed;
+  bottom: ws(small);
+  left: ws(small);
+
+  z-index: 999;
+}
+
+.editable {
+  border: 1px solid red;
+
+  * {
+    outline: 1px solid rgba(black, 0.4);
+  }
+}

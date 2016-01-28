@@ -1,15 +1,12 @@
-/* jshint node: true */
-
 'use strict';
 
 const express = require('express');
-const router  = express.Router();
-
 const request = require('request');
 
-const fns = require('../functions');
-
+const fns   = require('../functions');
 const Route = require('../route');
+
+const router = express.Router();
 
 router.route('/')
   .get((req, res) => {
@@ -24,7 +21,7 @@ router.route('/:token')
 
       request.get(Route.slideshow(req.params.token), (error, _res, body) => {
         body = JSON.parse(body);
-        
+
         // Mongo outputs an array
         // we need to get the first value
         slideshow = body.slideshow[0];
@@ -39,7 +36,7 @@ router.route('/:token')
           res.render('slideshow', {token: req.params.token, slideshow: slideshow, base: Route.url()});
         });
       });
-    }, 
+    },
 
     () => {
       res.render('slideshow', {token: req.params.token, error: 'Invalid token'});

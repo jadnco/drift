@@ -7,25 +7,25 @@ let SlideshowSchema = new Schema({
   // Unique identifier
   token: {
     type: String,
-    unique: true
+    unique: true,
   },
 
   // Slide position (relative to `slides`)
   position: {
     type: Number,
-    default: 0
+    default: 0,
   },
 
   // Array of slide references
   slides: [{
     type: Schema.Types.ObjectId,
-    ref: 'Slide'
-  }],
+    ref: 'Slide',
+  }, ],
 
   // Created date
   created: {
     type: Date,
-    default: Date.now
+    default: Date.now,
   },
 
   title: String,
@@ -33,7 +33,7 @@ let SlideshowSchema = new Schema({
   author: String,
 
   // Date of last modifications
-  modified: Date
+  modified: Date,
 });
 
 module.exports = mongoose.model('Slideshow', SlideshowSchema);

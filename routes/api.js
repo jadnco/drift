@@ -3,10 +3,12 @@
 'use strict';
 
 const express    = require('express');
-const router     = express.Router();
+
 const slideshows = require('./api/slideshow');
 const slides     = require('./api/slide');
 const query      = require('../functions').query;
+
+const router = express.Router();
 
 router.route('/slideshow/:token/slides')
 
@@ -22,6 +24,17 @@ router.route('/slideshow/:token/slides')
     let _query = query(req.params.token, {token: req.params.token});
 
     slides.add(_query, req, res);
+  });
+
+router.route('/slide/:id')
+
+  .get((req, res) => {
+    slides.get(req.params.id, res);
+  })
+
+  // Create a new slideshow
+  .put((req, res) => {
+    slides.update(req.params.id, req, res);
   });
 
 router.route('/slideshow/:token')
@@ -46,7 +59,7 @@ router.route('/slideshow/:token')
   .delete((req, res) => {
     // Create query, can select w/ id or token
     let _query = query(req.params.token, {token: req.params.token});
-    
+
     slideshows.delete(_query, res);
   });
 
