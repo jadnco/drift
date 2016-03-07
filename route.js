@@ -6,7 +6,9 @@ module.exports = {
   port: '1998',
 
   local: 'localhost',
-  external: '10.28.163.66',
+
+  // IP address that can be accessed through network
+  external: 'localhost',
 
   api: function() {
     return (this._local ? this.local : this.external) + '/api';
