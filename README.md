@@ -15,7 +15,7 @@ Make sure you have the following dependencies installed globally:
 Clone the repo using `git clone` or by clicking the *Download ZIP* button to the right.
 
 ```sh
-git clone https://github.com/danieltamkin/Drift.git
+git clone https://github.com/jadnco/drift.git
 ```
 
 Navigate to the cloned directory
