@@ -2,7 +2,7 @@
 
 [![forthebadge](http://forthebadge.com/images/badges/certified-snoop-lion.svg)](http://forthebadge.com)
 
-A cool slideshow and remote app.
+A cool Markdown slideshow creator and remote app. This is only like, 50% complete.
 
 ### Getting Started
 
